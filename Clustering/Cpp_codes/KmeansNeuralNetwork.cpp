@@ -6,22 +6,37 @@
 
 using namespace std;
 
-void KmeansNeuralNetwork::ReadData(char* filename)
+void KmeansNeuralNetwork::ReadData(char* filename_training, char* filename_testing)
 {
-  FILE *fp = fopen(filename, "r");
+  FILE *fp = fopen(filename_training, "r");
   fscanf(fp, "%*s %d %*s %d", &m_Nsamples, &m_SizeOfSample);
   printf("Number of datapoints = %d\n", m_Nsamples);
   printf("Length of data = %d\n", m_SizeOfSample);
   m_DataMatrix = (double**)malloc(m_Nsamples*sizeof(double*));
   for (int i = 0; i < m_Nsamples; i++) m_DataMatrix[i] = (double*)malloc(m_SizeOfSample*sizeof(double));
 
-  double tmp;
   for (int i = 0; i < m_Nsamples; i++){
     for (int j = 0; j < m_SizeOfSample; j++){
       fscanf(fp, "%lf", &m_DataMatrix[i][j]);
     }
   }
   fclose(fp);
+
+  fp = fopen(filename_testing, "r");
+  fscanf(fp, "%*s %d %*s %d", &m_Ntestingdata, &m_SizeOfSample);
+  printf("Number of data points for testing = %d\n", m_Ntestingdata);
+  printf("Length of data = %d\n", m_SizeOfSample);
+
+  m_testDataMatrix = (double**)malloc(m_Ntestingdata*sizeof(double*));
+  for (int i = 0; i < m_Ntestingdata; i++) m_testDataMatrix[i] = (double*)malloc(m_SizeOfSample*sizeof(double));
+
+  for (int i = 0; i < m_Ntestingdata; i++){
+    for (int j = 0; j < m_SizeOfSample; j++){
+      fscanf(fp, "%lf", &m_testDataMatrix[i][j]);
+    }
+  }
+  fclose(fp);
+
 
   /* Normalize each data point. */
   double s;
@@ -32,6 +47,16 @@ void KmeansNeuralNetwork::ReadData(char* filename)
     }
     for (int j = 0; j < m_SizeOfSample; j++){
       m_DataMatrix[i][j] /= s;
+    }
+  }
+
+  for (int i = 0; i < m_Ntestingdata; i++){
+    s = 0.;
+    for (int j = 0; j < m_SizeOfSample; j++){
+      s += m_testDataMatrix[i][j];
+    }
+    for (int j = 0; j < m_SizeOfSample; j++){
+      m_testDataMatrix[i][j] /= s;
     }
   }
 }
@@ -68,7 +93,7 @@ void KmeansNeuralNetwork::InitiateModel(int k_neurons, double learning_rate, int
 
 void KmeansNeuralNetwork::TrainModel()
 {
-  double tmp;
+  double tmp, *ptr;
   int winning_neuron;
   for (int epoch = 0; epoch < m_Nepochs; epoch++){
     printf("Epoch %d of %d\n", epoch, m_Nepochs);
@@ -96,22 +121,25 @@ void KmeansNeuralNetwork::TrainModel()
 void KmeansNeuralNetwork::Predict()
 {
   /* This function must be updated so actual test data is provided */
+
+
+
   double tmp;
   int winning_neuron;
-  double *test_data = (double*)malloc(m_SizeOfSample*sizeof(double));
-  for (int i = 0; i < m_SizeOfSample; i++) test_data[i] = m_DataMatrix[0][i];
-  for (int i = 0; i < m_Kneurons; i++){
-    tmp = 0;
-    for (int j = 0; j < m_SizeOfSample; j++){
-      tmp += m_Weights[i][j]*test_data[j];
+  for (int sample = 0; sample < m_Ntestingdata; sample++){
+    for (int i = 0; i < m_Kneurons; i++){
+      tmp = 0;
+      for (int j = 0; j < m_SizeOfSample; j++){
+        tmp += m_Weights[i][j]*m_testDataMatrix[sample][j];
+      }
+      m_Activations[i] = tmp;
     }
-    m_Activations[i] = tmp;
-  }
-  winning_neuron = 0;
-  for (int i = 1; i < m_Kneurons; i++){
-    if (m_Activations[i] > m_Activations[winning_neuron]){
-      winning_neuron = i;
+    winning_neuron = 0;
+    for (int i = 1; i < m_Kneurons; i++){
+      if (m_Activations[i] > m_Activations[winning_neuron]){
+        winning_neuron = i;
+      }
     }
+    printf("Data point belongs to cluster %d\n", winning_neuron);
   }
-  printf("Data point belongs to cluster %d\n", winning_neuron);
 }

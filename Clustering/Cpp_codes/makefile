@@ -1,7 +1,7 @@
 train_model: compile execute
 
 compile:
-	g++ -o main.exe $(wildcard *.cpp)
+	g++ -O3 -o main.exe $(wildcard *.cpp) -fopt-info
 
 execute:
-	./main.exe MNIST_training_data.txt
+	./main.exe MNIST_training_data.txt MNIST_test_data.txt

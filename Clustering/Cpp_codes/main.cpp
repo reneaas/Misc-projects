@@ -12,8 +12,9 @@ int main(int argc, char *argv[]) {
   double learning_rate = 0.1;
   int number_of_epochs = 100;
   KmeansNeuralNetwork Cluster;
-  char *filename = argv[1];
-  Cluster.ReadData(filename);
+  char *filename_training = argv[1];
+  char *filename_testing = argv[2];
+  Cluster.ReadData(filename_training, filename_testing);
   Cluster.InitiateModel(k_neurons, learning_rate, number_of_epochs);
   Cluster.TrainModel();
   Cluster.Predict();

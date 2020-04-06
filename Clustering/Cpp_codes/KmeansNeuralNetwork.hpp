@@ -16,9 +16,10 @@ private:
   double **m_Weights;
   int m_Nepochs;
   double m_LearningRate;
+  int m_Ntestingdata;
 public:
   void InitiateModel(int k_neurons, double learning_rate, int number_of_epochs);
-  void ReadData(char* filename);
+  void ReadData(char* filename_training, char *filename_testing);
   void TrainModel();
   void Predict();
 };
