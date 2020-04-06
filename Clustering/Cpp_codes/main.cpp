@@ -9,8 +9,8 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   int k_neurons = 10;
-  double learning_rate = 0.1;
-  int number_of_epochs = 100;
+  double learning_rate = 0.01;
+  int number_of_epochs = 1000;
   KmeansNeuralNetwork Cluster;
   char *filename_training = argv[1];
   char *filename_testing = argv[2];

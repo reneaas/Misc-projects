@@ -8,6 +8,7 @@ using namespace std;
 
 void KmeansNeuralNetwork::ReadData(char* filename_training, char* filename_testing)
 {
+  /* Reads training data */
   FILE *fp = fopen(filename_training, "r");
   fscanf(fp, "%*s %d %*s %d", &m_Nsamples, &m_SizeOfSample);
   printf("Number of datapoints = %d\n", m_Nsamples);
@@ -22,6 +23,7 @@ void KmeansNeuralNetwork::ReadData(char* filename_training, char* filename_testi
   }
   fclose(fp);
 
+  /* Reads test data */
   fp = fopen(filename_testing, "r");
   fscanf(fp, "%*s %d %*s %d", &m_Ntestingdata, &m_SizeOfSample);
   printf("Number of data points for testing = %d\n", m_Ntestingdata);
@@ -38,7 +40,7 @@ void KmeansNeuralNetwork::ReadData(char* filename_training, char* filename_testi
   fclose(fp);
 
 
-  /* Normalize each data point. */
+  /* Normalize each data point. The points must lie on the unit sphere */
   double s;
   for (int i = 0; i < m_Nsamples; i++){
     s = 0.;
@@ -120,10 +122,6 @@ void KmeansNeuralNetwork::TrainModel()
 
 void KmeansNeuralNetwork::Predict()
 {
-  /* This function must be updated so actual test data is provided */
-
-
-
   double tmp;
   int winning_neuron;
   for (int sample = 0; sample < m_Ntestingdata; sample++){
