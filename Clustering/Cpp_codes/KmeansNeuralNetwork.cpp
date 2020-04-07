@@ -95,30 +95,46 @@ void KmeansNeuralNetwork::InitiateModel(int k_neurons, double learning_rate, int
 
 void KmeansNeuralNetwork::TrainModel()
 {
-  double tmp, *ptr;
   int winning_neuron;
   for (int epoch = 0; epoch < m_Nepochs; epoch++){
     printf("Epoch %d of %d\n", epoch, m_Nepochs);
     for (int sample = 0; sample < m_Nsamples; sample++){
-      for (int i = 0; i < m_Kneurons; i++){
-        tmp = 0;
-        for (int j = 0; j < m_SizeOfSample; j++){
-          tmp += m_Weights[i][j]*m_DataMatrix[sample][j];
-        }
-        m_Activations[i] = tmp;
-      }
-      winning_neuron = 0;
-      for (int i = 1; i < m_Kneurons; i++){
-        if (m_Activations[i] > m_Activations[winning_neuron]){
-          winning_neuron = i;
-        }
-      }
-      for (int j = 0; j < m_SizeOfSample; j++){
-        m_Weights[winning_neuron][j] += m_LearningRate*(m_DataMatrix[sample][j] - m_Weights[winning_neuron][j]);
-      }
+      ComputeActivations(sample);
+      FindWinningNeuron(&winning_neuron);
+      UpdateWeights(winning_neuron, sample);
     }
   }
 }
+
+void KmeansNeuralNetwork::ComputeActivations(int sample_id)
+{
+  double tmp;
+  for (int i = 0; i < m_Kneurons; i++){
+    tmp = 0.;
+    for (int j = 0; j < m_SizeOfSample; j++){
+      tmp += m_Weights[i][j]*m_DataMatrix[sample_id][j];
+    }
+    m_Activations[i] = tmp;
+  }
+}
+
+void KmeansNeuralNetwork::FindWinningNeuron(int *winning_neuron)
+{
+  *winning_neuron = 0;
+  for (int i = 1; i < m_Kneurons; i++){
+    if (m_Activations[i] > m_Activations[*winning_neuron]){
+      *winning_neuron = i;
+    }
+  }
+}
+
+void KmeansNeuralNetwork::UpdateWeights(int winning_neuron, int sample_id)
+{
+  for (int j = 0; j < m_SizeOfSample; j++){
+    m_Weights[winning_neuron][j] += m_LearningRate*(m_DataMatrix[sample_id][j] - m_Weights[winning_neuron][j]);
+  }
+}
+
 
 void KmeansNeuralNetwork::Predict()
 {

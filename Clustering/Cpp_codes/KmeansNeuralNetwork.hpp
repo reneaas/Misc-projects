@@ -20,6 +20,9 @@ private:
 public:
   void InitiateModel(int k_neurons, double learning_rate, int number_of_epochs);
   void ReadData(char* filename_training, char *filename_testing);
+  void ComputeActivations(int sample_id);
+  void FindWinningNeuron(int *winning_neuron);
+  void UpdateWeights(int winning_neuron, int sample_id);
   void TrainModel();
   void Predict();
 };
