@@ -1,7 +1,6 @@
-#ifndef KMEANSNEURALNETWORK_H
-#define KMEANSNEURALNETWORK_H
+#ifndef _KMEANSNEURALNETWORK_H
+#define _KMEANSNEURALNETWORK_H
 
-using namespace std;
 
 class KmeansNeuralNetwork
 {
