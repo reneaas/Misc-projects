@@ -3,6 +3,7 @@
 #include <cmath>
 #include "KmeansNeuralNetwork.hpp"
 #include <time.h>
+#include <string.h>
 
 using namespace std;
 
@@ -97,13 +98,14 @@ void KmeansNeuralNetwork::TrainModel()
 {
   int winning_neuron;
   for (int epoch = 0; epoch < m_Nepochs; epoch++){
-    printf("Epoch %d of %d\n", epoch, m_Nepochs);
+    printf("Epoch %d of %d\r", epoch, m_Nepochs);
     for (int sample = 0; sample < m_Nsamples; sample++){
       ComputeActivations(sample);
       FindWinningNeuron(&winning_neuron);
       UpdateWeights(winning_neuron, sample);
     }
   }
+  printf("Finished training the model.\n");
 }
 
 void KmeansNeuralNetwork::ComputeActivations(int sample_id)
