@@ -22,3 +22,4 @@ Hitherto, I've implemented K-means clustering algorithm based on a simple two-la
 
 For information on how to compile and run the codes, see
 [diffusion_eq](https://github.com/reneaas/MachineLearning/tree/master/diffusion_eq). Here you find a README explaining the details.
+A detailed analysis of the method used can be found in this [report](https://github.com/reneaas/ComputationalPhysics/blob/master/projects/project5/report/Project_5.pdf).

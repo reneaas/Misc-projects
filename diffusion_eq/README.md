@@ -4,6 +4,8 @@ In main.cpp you can find an example showcasing the use of the
 the class DiffusionSolver. For now, the code is either serial
 or parallelized with OpenMP.
 
+A detailed analysis of the method used can be found in this [report](https://github.com/reneaas/ComputationalPhysics/blob/master/projects/project5/report/Project_5.pdf).
+
 For compilation details, take a look at the makefile.
 
 ### Serial code
