@@ -1,6 +1,7 @@
 #Necessary imports.
 import numpy as np
 import matplotlib.pyplot as plt
+from progress.bar import Bar, IncrementalBar
 
 class rbm:
     """
@@ -91,12 +92,13 @@ class rbm:
         dvb = np.zeros(self.nvisible)
         dhb = np.zeros(self.nhidden)
 
-
+        #bar = Bar("Progress", fill = "=" ,max = self.nepochs)
+        bar = IncrementalBar("Progress", max = self.nepochs)
         #Trains the RBM using the CD-n algorithm on a single datapoint at the time.
         for epoch in np.arange(self.nepochs):
+            bar.next()
             shuffled_indices = np.random.permutation(self.batch_size)
             training_data = self.data_matrix[shuffled_indices]
-            print("Epoch %d of %d" % (epoch, self.nepochs))
             error = 0
             for k in range(self.batch_size):
                 visible = training_data[k]
@@ -135,11 +137,15 @@ class rbm:
                 error += np.sum((self.data_matrix[k]-self.visibleact)**2)
             error /= self.batch_size
             self.loss[epoch] = error
+        bar.finish()
 
-    def compute_reconstruction(self, input):
+
+    def predict(self, input):
         self.compute_hidden(input)
         self.compute_visible(self.hiddenprob)
-        return None
+        for k in range(self.nCDsteps):
+            self.compute_hidden(self.visibleact)
+            self.compute_visible(self.hiddenprob)
 
     def plot_loss(self):
         epochs = np.linspace(0, self.nepochs, self.nepochs)
@@ -151,7 +157,7 @@ class rbm:
 def make_binary(data):
     """data: an numpy array of elements between 0 and 255 (pixels). Returns a binary version of the array."""
     data = data/255
-    for i in np.arange(len(data.flat)):
+    for i in range(len(data.flat)):
         if data.flat[i] > 0.5:
             data.flat[i] = 1
         else:
