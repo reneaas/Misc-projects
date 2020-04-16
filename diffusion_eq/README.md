@@ -16,7 +16,7 @@ make serial
 
 ### Code parallelized with OpenMP
 
-To run the code parallelized with OpenMP, run the follwing command in a linux terminal:
+To run the code parallelized with OpenMP, run the following command in a linux terminal:
 
 ```terminal
 make omp
