@@ -13,3 +13,9 @@ I've implemented a RBM in Python, C and C++. The C-version is naturally function
 Hitherto, I've implemented K-means clustering algorithm based on a simple two-layered neural network as a object-oriented C++ code.
 
 - [Here are the codes](https://github.com/reneaas/MachineLearning/tree/master/Clustering/Cpp_codes)
+
+## Other algorithms
+
+### 2D Diffusion Equation solver
+
+- [The 2D diffusion equation solver ](https://github.com/reneaas/MachineLearning/blob/master/diffusion_eq/diffusion_solver.cpp)
