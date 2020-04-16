@@ -19,3 +19,6 @@ Hitherto, I've implemented K-means clustering algorithm based on a simple two-la
 ### 2D Diffusion Equation solver
 
 - [The 2D diffusion equation solver ](https://github.com/reneaas/MachineLearning/blob/master/diffusion_eq/diffusion_solver.cpp)
+
+For information on how to compile and run the codes, see
+[diffusion_eq](https://github.com/reneaas/MachineLearning/tree/master/diffusion_eq). Here you find a README explaining the details.
