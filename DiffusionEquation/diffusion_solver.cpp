@@ -113,7 +113,6 @@ void DiffusionSolver::Solve(double max_time)
     m_final_time = t;
   }
   #endif
-  printf("Final timestep = %lf\n", t);
   printf("Time used = %lf\n", timeused);
 }
 
@@ -136,7 +135,4 @@ void DiffusionSolver::WriteToFile(string filename)
     ofile << " " << endl;
   }
   ofile.close();
-
-  //Free up memory
-  //free(m_v_old);
 }

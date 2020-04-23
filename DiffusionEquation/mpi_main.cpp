@@ -27,19 +27,16 @@ make omp
 
 */
 int main(int argc, char const *argv[]) {
-  int N = 200;
+  int N = 5;
   double r = 0.25;
   double max_time = 1;
-  string filename = "output.txt";
+  string filename = "mpi_output.txt";
 
   DiffusionSolver my_solver;
   my_solver.Initiate(N, r);
   my_solver.SetInitialCondition(f);
-  //my_solver.PrintSolution();
-  //my_solver.Solve(max_time);
   my_solver.MPI_Solve(max_time);
-  //my_solver.PrintSolution();
-  my_solver.WriteToFile(filename);
+  //my_solver.WriteToFile(filename);
 
   return 0;
 }

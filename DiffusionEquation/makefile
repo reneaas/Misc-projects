@@ -17,7 +17,7 @@ execute_omp:
 mpi: compile_mpi execute_mpi
 
 compile_mpi:
-	mpic++ -o mpi_main.exe main.cpp diffusion_solver.cpp mpi_diffusion_solver.cpp
+	mpic++ -o mpi_main.exe mpi_main.cpp diffusion_solver.cpp mpi_diffusion_solver.cpp
 
 execute_mpi:
-	mpirun -n 4 ./mpi_main.exe
+	mpirun -n 4 --oversubscribe ./mpi_main.exe

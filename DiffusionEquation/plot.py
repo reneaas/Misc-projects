@@ -5,9 +5,6 @@ def analytical(x,y,t):
     return np.sin(np.pi*x)*np.sin(np.pi*y)*np.exp(-2*np.pi**2*t)
 
 
-x = np.linspace(0, 1, 201)
-y = np.linspace(0, 1, 201)
-
 infilename = "output.txt"
 with open(infilename, "r") as infile:
     first_line = infile.readline()
@@ -22,17 +19,20 @@ with open(infilename, "r") as infile:
             u[i,j] = float(vals[j])
 
 
+x = np.linspace(0, 1, N)
+y = np.linspace(0, 1, N)
+
 X, Y = np.meshgrid(x,y)
 func_vals = analytical(X,Y,t)
 
 
-plt.contourf(X,Y, func_vals, levels = 201)
+plt.contourf(X, Y, func_vals, levels = 201)
 plt.colorbar()
 plt.title("Analytical solution at t = " + str(t))
 plt.show()
 
 
-plt.contourf(X,Y, u, levels = 201)
+plt.contourf(X, Y, u, levels = 201)
 plt.colorbar()
 plt.title("Numerical solution at t = " + str(t))
 plt.show()
