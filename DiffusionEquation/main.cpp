@@ -27,7 +27,7 @@ make omp
 
 */
 int main(int argc, char const *argv[]) {
-  int N = 100;
+  int N = 500;
   double r = 0.25;
   double max_time = 1;
   string filename = "output.txt";

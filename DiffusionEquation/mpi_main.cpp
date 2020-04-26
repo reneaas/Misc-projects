@@ -27,7 +27,7 @@ make omp
 
 */
 int main(int argc, char const *argv[]) {
-  int N = 5;
+  int N = 10;
   double r = 0.25;
   double max_time = 1;
   string filename = "mpi_output.txt";

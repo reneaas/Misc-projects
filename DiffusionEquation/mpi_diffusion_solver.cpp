@@ -19,60 +19,40 @@ void DiffusionSolver::MPI_Solve(double max_time)
   //Declare necessary local variables.
   double *v_old, *v_new, ghost_array;
   int M_local, remainder;
-  int *n_elems, *sendcount, *displs;
+  int *n_rows, *sendcount, *displs;
 
   //Partition data among the processes
-  M_local = m_M*m_M/comm_sz;
-  remainder = m_M*m_M % comm_sz;
-  n_elems = (int*)malloc(comm_sz*sizeof(int));
-  for (int rank = 0; rank < comm_sz; rank++){
-    n_elems[rank] = (M_local + (remainder > 0));
+  M_local = m_M/comm_sz;
+  remainder = m_M % comm_sz;
+  n_rows = (int*)malloc(comm_sz*sizeof(int));
+  sendcount = (int*)malloc(comm_sz*sizeof(int));
+  displs = (int*)malloc(comm_sz*sizeof(int));
+  displs[0] = 0;
+  sendcount[0] = 0;
+  for (int rank = 0; rank < comm_sz-1; rank++){
+    n_rows[rank] = (M_local + (remainder > 0));
+    sendcount[rank] = n_rows[rank]*m_M;
+    displs[rank+1] = displs[rank] + sendcount[rank];
     remainder--;
   }
+  n_rows[comm_sz-1] = M_local + (remainder > 0);
+  sendcount[comm_sz-1] = n_rows[comm_sz-1]*m_M;
 
   if (my_rank == 0){
     for (int rank = 0; rank < comm_sz; rank++){
-      printf("Rank %d gets %d element(s)\n", rank, n_elems[rank]);
+      printf("Rank %d gets %d row(s)\n", rank, n_rows[rank]);
+      printf("Rank %d gets %d element(s)\n", rank, sendcount[rank]);
     }
   }
 
 
-  v_old = (double*)malloc(n_elems[my_rank]*sizeof(double));
-  v_new = (double*)malloc(n_elems[my_rank]*sizeof(double));
+  //v_old = (double*)malloc(n_rows[my_rank]*m_M*sizeof(double));
+  //v_new = (double*)malloc(n_rows[my_rank]*m_M*sizeof(double));
 
-  int row_elems = sqrt(n_elems[my_rank]);
-  int col_elems = row_elems;
+  //MPI_Scatterv(m_v_old, sendcount, displs, MPI_DOUBLE, v_old, sendcount[my_rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-  if (my_rank == 0){
-    int cumulative_rows;
-    for (int rank = 1; rank < comm_sz; rank++){
-      row_elems = sqrt(n_elems[rank]);
-      col_elems = row_elems;
-      if (rank % 2 != 0){
-        for (i = 0; i < row_elems; i++){
-          for (j = 0; j < col_elems; j++){
-            MPI_Send(&m_v_old[(i+cumulative_rows)*col_elems + (col_elems+j)], 1, MPI_DOUBLE, rank, rank, MPI_COMM_WORLD);
-          }
-        }
-      }
-      if (rank % 2 == 0){
-        for (i = 0; i < row_elems; i++){
-          for (j = 0; j < col_elems; j++){
-            MPI_Send(&m_v_old[(i+cumulative_rows)*col_elems + (col_elems+j)], 1, MPI_DOUBLE, rank, rank, MPI_COMM_WORLD);
-          }
-        }
-        cumulative_rows += row_elems;
-      }
-    }
-  }
-  else{
-    for (i = 0; i < row_elems; i++){
-      for (j = 0; j < col_elems; j++){
-        MPI_Recv(&v_old[i*col_elems + j], 1, MPI_DOUBLE, 0, my_rank, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      }
-    }
-  }
 
+  /*
   if (my_rank == 0){
     for (i = 0; i < m_M; i++){
       for (j = 0; j < m_M; j++){
@@ -85,9 +65,9 @@ void DiffusionSolver::MPI_Solve(double max_time)
   MPI_Barrier(MPI_COMM_WORLD);
   if (my_rank == 1){
     printf("My rank is %d\n", my_rank);
-    for (i = 0; i < row_elems; i++){
-      for (j = 0; j < col_elems; j++){
-        printf("%lf ", v_old[i*col_elems + j]);
+    for (i = 0; i < n_rows[my_rank]; i++){
+      for (j = 0; j < m_M; j++){
+        printf("%lf ", v_old[i*m_M + j]);
       }
       printf("\n");
     }
@@ -96,9 +76,9 @@ void DiffusionSolver::MPI_Solve(double max_time)
   MPI_Barrier(MPI_COMM_WORLD);
   if (my_rank == 2){
     printf("My rank is %d\n", my_rank);
-    for (i = 0; i < row_elems; i++){
-      for (j = 0; j < col_elems; j++){
-        printf("%lf ", v_old[i*col_elems + j]);
+    for (i = 0; i < n_rows[my_rank]; i++){
+      for (j = 0; j < m_M; j++){
+        printf("%lf ", v_old[i*m_M + j]);
       }
       printf("\n");
     }
@@ -107,14 +87,15 @@ void DiffusionSolver::MPI_Solve(double max_time)
   MPI_Barrier(MPI_COMM_WORLD);
   if (my_rank == 3){
     printf("My rank is %d\n", my_rank);
-    for (i = 0; i < row_elems; i++){
-      for (j = 0; j < col_elems; j++){
-        printf("%lf ", v_old[i*col_elems + j]);
+    for (i = 0; i < n_rows[my_rank]; i++){
+      for (j = 0; j < m_M; j++){
+        printf("%lf ", v_old[i*m_M + j]);
       }
       printf("\n");
     }
     printf("------------------------------------------------------\n");
   }
+  */
 
 
 
