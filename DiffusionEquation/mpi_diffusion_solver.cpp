@@ -46,13 +46,11 @@ void DiffusionSolver::MPI_Solve(double max_time)
   }
 
 
-  //v_old = (double*)malloc(n_rows[my_rank]*m_M*sizeof(double));
-  //v_new = (double*)malloc(n_rows[my_rank]*m_M*sizeof(double));
+  v_old = (double*)malloc(n_rows[my_rank]*m_M*sizeof(double));
+  v_new = (double*)malloc(n_rows[my_rank]*m_M*sizeof(double));
 
-  //MPI_Scatterv(m_v_old, sendcount, displs, MPI_DOUBLE, v_old, sendcount[my_rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(m_v_old, sendcount, displs, MPI_DOUBLE, v_old, sendcount[my_rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-
-  /*
   if (my_rank == 0){
     for (i = 0; i < m_M; i++){
       for (j = 0; j < m_M; j++){
@@ -95,14 +93,26 @@ void DiffusionSolver::MPI_Solve(double max_time)
     }
     printf("------------------------------------------------------\n");
   }
-  */
+  MPI_Barrier(MPI_COMM_WORLD);
 
+  //The actual diffusion solver
 
-
-
-
-  //MPI_Scatterv(m_v_old, n_elems, displs, MPI_DOUBLE, v_old, n_elems[my_rank], MPI_DOUBLE, 0, MPI_COMM_WORLD); //Scatters the data among the processes.
-
+  double t = 0, *tmp;
+  while (t < max_time){
+    for (i = 1; i < M_local-1; i++){
+      for (j = 1; j < M_local-1; j++){
+        v_new[i*M_local + j] = MPI_ComputeNew_v(i, j, M_local, v_old);
+      }
+    }
+    //Here communication of ghost arrays need to happen before pointer swap occurs.
+  }
 
   MPI_Finalize();
+}
+
+double DiffusionSolver::MPI_ComputeNew_v(int i, int j, int M_local, double* v_old)
+{
+  return (1-4*m_r)*v_old[i*M_local + j]
+          + m_r*(v_old[(i+1)*M_local + j] + v_old[(i-1)*M_local + j]
+                  + v_old[i*M_local + (j+1)] + v_old[i*M_local + (j-1)] );
 }

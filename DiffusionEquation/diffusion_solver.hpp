@@ -24,6 +24,7 @@ public:
   void MPI_Solve(double max_time);
   double ComputeNew_v(int i, int j);
   void WriteToFile(string filename);
+  void MPI_ComputeNew_v(int i, int j, int M_local, double* v_old)
 };
 
 #endif
