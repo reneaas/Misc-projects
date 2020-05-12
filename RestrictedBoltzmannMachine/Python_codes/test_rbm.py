@@ -16,7 +16,7 @@ testX, testY = testX[shuffled_indices], testY[shuffled_indices]
 size_of_dataset = 60000;
 #Initialize the model
 my_rbm = rbm(nvisible=28*28,
-            nhidden=8*8,
+            nhidden=14*14,
             eta = 0.08,
             momentum = 0.9,
             nCDsteps = 25,
