@@ -7,15 +7,6 @@ class rbm:
     """
     This class implement a simple restricted boltzmann machine (RBM) using both learning rate (eta) and momentum to update its parameters;
     weights, visiblebias and hiddenbias, to learn the RBM features contained in the sample distribution it's supposed to learn.
-    I've mainly applied it to the MNIST dataset of handwritten digits and it reconstructs the images very well after rougly 10000 training examples.
-    It does well after less training examples as well (say 1000), but the fidelity of the reconstructions aren't as good.
-
-    Some advice based on my experience, the baseline for the learning rate and momentum set in the class works well. Furthermore CD-25 (that is nCDsteps = 25) is sufficient to train the algorithm.
-    To speed up the algorithm, use nCDsteps = 1, it works really well too, but you might need more training examples. Usually I've used nepochs = 15 - 30 as that is usually enough.
-    The number of hidden units, nhidden, is also important. If you use nhidden ~ nvisible, you'll get better results on the reconstructions but you will the training will take much longer.
-    with nvisible = 28*28 you can get adequate results with nhidden = 8*8 on the MNIST dataset suggesting that the dimensionality of the dataset can be lowered, but the reconstructions will suffer a
-    little bit.
-
     """
     def __init__(self, nvisible, nhidden, eta, momentum, nCDsteps, nepochs, batch_size, size_of_dataset):
         """
@@ -92,10 +83,9 @@ class rbm:
         dvb = np.zeros(self.nvisible)
         dhb = np.zeros(self.nhidden)
 
-        #bar = Bar("Progress", fill = "=" ,max = self.nepochs)
-        bar = IncrementalBar("Progress", max = self.nepochs)
+        bar = IncrementalBar("Progress", max = self.nepochs)  #Sets up the progressbar.
         #Trains the RBM using the CD-n algorithm on a single datapoint at the time.
-        for epoch in np.arange(self.nepochs):
+        for epoch in range(self.nepochs):
             bar.next()
             shuffled_indices = np.random.permutation(self.batch_size)
             training_data = self.data_matrix[shuffled_indices]
@@ -153,13 +143,3 @@ class rbm:
         plt.xlabel("Epochs")
         plt.ylabel("Loss")
         plt.show()
-
-def make_binary(data):
-    """data: an numpy array of elements between 0 and 255 (pixels). Returns a binary version of the array."""
-    data = data/255
-    for i in range(len(data.flat)):
-        if data.flat[i] > 0.5:
-            data.flat[i] = 1
-        else:
-            data.flat[i] = 0
-    return data

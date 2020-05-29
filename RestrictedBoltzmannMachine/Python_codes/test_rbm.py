@@ -3,7 +3,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import time
 import os
-from rbm import rbm, make_binary
+from rbm import rbm
 
 print("Downloading dataset...")
 mnist = tf.keras.datasets.mnist
