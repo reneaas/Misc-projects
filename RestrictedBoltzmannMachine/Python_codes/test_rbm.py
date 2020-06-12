@@ -45,7 +45,7 @@ test_data = np.zeros(28*28)
 for k in range(1,10):
     example = np.zeros((28,28),float)
     test_data[:] = testX[k-1].flat[:]
-    test_data = make_binary(test_data)
+    test_data = test_data/255.0 > 0.5
 
     my_rbm.predict(test_data)
     example.flat[:] = my_rbm.visibleprob[:]

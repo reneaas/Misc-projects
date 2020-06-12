@@ -17,3 +17,12 @@ The necessary packages are
 2. matplotlib
 3. progress
 4. tensorflow
+
+
+#### Testrun on Ubuntu 20.04
+
+```terminal
+Progress |████████████████████████████████| 500/500
+Model was trained for  157.02173709869385  seconds
+```
+
