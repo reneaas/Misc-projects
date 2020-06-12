@@ -6,7 +6,7 @@ using namespace std;
 
 
 int main(int argc, char const *argv[]) {
-    int number_of_objects = 5;
+    int number_of_objects = 10;
     double total_time = 1;
     double stepsize = 0.001;
 

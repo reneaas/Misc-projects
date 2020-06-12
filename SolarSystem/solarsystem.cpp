@@ -57,6 +57,7 @@ void SolarSystem::Solve(double total_time)
         for (int j = 0; j < m_number_of_objects; j++){
             Advance(j);
         }
+        WriteToFile();
         SwapPointers();
     }
     ofile_pos.close();
@@ -99,9 +100,9 @@ void SolarSystem::Advance(int j)
 
 void SolarSystem::SwapPointers()
 {
-    //Swap position pointers.
     double *tmp_pos, *tmp_vel;
 
+    //Swap position pointers.
     tmp_pos = m_pos_old;
     m_pos_old = m_pos_new;
     m_pos_new = tmp_pos;
