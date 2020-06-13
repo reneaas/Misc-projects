@@ -9,7 +9,7 @@ execute_serial:
 omp: compile_omp execute_omp
 
 compile_omp:
-	g++ -O3 -fopenmp -o omp_main.exe main.cpp diffusion_solver.cpp
+	g++ -O3 -fopenmp -o omp_main.exe main.cpp diffusion_solver.cpp -mtune=native -march=native
 
 execute_omp:
 	./omp_main.exe

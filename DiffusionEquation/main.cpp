@@ -29,7 +29,7 @@ make omp
 int main(int argc, char const *argv[]) {
   int N = 250;
   double r = 0.25;
-  double max_time = 1;
+  double max_time = 10;
   string filename = "output.txt";
 
   DiffusionSolver my_solver;
