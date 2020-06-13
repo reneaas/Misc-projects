@@ -46,9 +46,12 @@ void SolarSystem::ReadInitialData()
     fp = fopen(masses_file, "r");
     for (int i = 0; i < m_number_of_objects; i++){
         fscanf(fp, "%lf", &m_masses[i]);
+        m_total_mass_inv += m_masses[i];
     }
     fclose(fp);
+    m_total_mass_inv = 1./m_total_mass_inv;
     cout << "Finished reading" << endl;
+
 }
 
 void SolarSystem::InitializeThreeBodyData()
@@ -89,11 +92,17 @@ void SolarSystem::Solve(double total_time)
     m_Nsteps =  m_total_time/m_stepsize;
     for (int i = 0; i < m_Nsteps; i++){
         cout << "Timestep " << i << " of " << m_Nsteps << endl;
+        /*
         for (int j = 0; j < m_number_of_objects; j++){
             AdvancePosition(j);
         }
         for (int j = 0; j < m_number_of_objects; j++){
             AdvanceVelocity(j);
+        }
+        */
+        for (int j = 0; j < m_number_of_objects; j++){
+            ComputeAcceleration(j);
+            EulerCromer(j);
         }
         WriteToFile();
         SwapPointers();
@@ -108,9 +117,9 @@ void SolarSystem::Solve(double total_time)
 
 void SolarSystem::AdvancePosition(int j)
 {
-    /*
-    This function uses the Velocity-Verlet algorithm.
-    */
+
+    //This function uses the Velocity-Verlet algorithm.
+
     double force[m_dims] = {0., 0., 0.};
     double diff_vec[m_dims] = {0., 0., 0.};
     double acc[m_dims] = {0., 0., 0.};
@@ -202,10 +211,65 @@ void SolarSystem::SwapPointers()
 
 void SolarSystem::WriteToFile()
 {
+    double CM_pos[m_dims] = {0., 0., 0.};
+    double mass_inv;
+    for (int i = 0; i < m_number_of_objects; i++){
+        mass_inv = m_masses[i]*m_total_mass_inv;
+        for (int j = 0; j < m_dims; j++){
+            CM_pos[j] += mass_inv*m_pos_new[i*m_number_of_objects + j];
+        }
+    }
+
+    for (int i = 0; i < m_number_of_objects; i++){
+        for (int j = 0; j < m_dims; j++){
+            m_pos_new[i*m_number_of_objects + j] -= CM_pos[j];
+        }
+    }
+    
+
     for (int i = 0; i < m_number_of_objects; i++){
         for (int j = 0; j < m_dims; j++){
             ofile_pos << m_pos_new[i*m_number_of_objects + j] << " ";
         }
     }
     ofile_pos << " " << endl;
+}
+
+void SolarSystem::EulerCromer(int j)
+{
+    for (int i = 0; i < m_dims; i++){
+        m_vel_new[j*m_number_of_objects + i] = m_vel_old[j*m_number_of_objects + i] + m_acc_old[j*m_number_of_objects + i]*m_stepsize;
+        m_pos_new[j*m_number_of_objects + i] = m_pos_old[j*m_number_of_objects + i] + m_vel_new[j*m_number_of_objects + i]*m_stepsize;
+    }
+}
+
+void SolarSystem::ComputeAcceleration(int j)
+{
+    double force[m_dims] = {0., 0., 0.};
+    double diff_vec[m_dims] = {0., 0., 0.};
+    double acc[m_dims] = {0., 0., 0.};
+    double mass, rnorm, Grnorm_inv;
+
+
+    //Compute acceleration on object j
+    for (int k = 0; k < m_number_of_objects; k++){
+        if (k != j){
+            rnorm = 0.;
+            mass = m_masses[k];
+            for (int l = 0; l < m_dims; l++){
+                diff_vec[l] = m_pos_old[j*m_number_of_objects + l] - m_pos_old[k*m_number_of_objects + l];
+                force[l] = -mass*diff_vec[l];
+                rnorm += diff_vec[l]*diff_vec[l];
+            }
+            rnorm = pow(rnorm, 1.5);
+            Grnorm_inv = G*(1./rnorm);
+
+            for (int l = 0; l < m_dims; l++){
+                acc[l] += force[l]*Grnorm_inv;
+            }
+        }
+    }
+
+
+    for (int l = 0; l < m_dims; l++) m_acc_old[j*m_number_of_objects + l] = acc[l];
 }

@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
+print("Plotting orbits...")
 infilename = "computed_positions.txt"
 dims = 3
 with open(infilename, "r") as infile:

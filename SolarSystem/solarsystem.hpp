@@ -15,6 +15,7 @@ private:
     double m_stepsize, m_stepsize_squared;
     int m_Nsteps;
     double m_total_time;
+    double m_total_mass_inv = 0.;
     int m_i, m_j, m_k;
     const double G = 4*M_PI*M_PI;
     ofstream ofile_pos;
@@ -29,6 +30,8 @@ public:
     void AdvanceVelocity(int j);
     void SwapPointers();
     void WriteToFile();
+    void EulerCromer(int j);
+    void ComputeAcceleration(int j);
 };
 
 #endif
