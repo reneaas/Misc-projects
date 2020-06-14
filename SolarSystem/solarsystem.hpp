@@ -28,7 +28,7 @@ public:
     void Solve(double total_time);
     void AdvancePosition(int j);
     void AdvanceVelocity(int j);
-    void SwapPointers();
+    void Swap();
     void WriteToFile();
     void EulerCromer(int j);
     void ComputeAcceleration(int j);
