@@ -1,7 +1,9 @@
+CXXFLAGS= -O3 -march=native -mtune=native
+
 all: compile execute plot
 
 compile:
-	g++ -O3 -o main.exe $(wildcard *.cpp) -march=native
+	g++ $(CXXFLAGS) -o main.exe $(wildcard *.cpp)
 
 execute:
 	./main.exe

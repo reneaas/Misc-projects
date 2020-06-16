@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
     int number_of_objects = 3;
-    double total_time = 2.2;
+    double total_time = 20;
     double stepsize = 0.0001;
 
     SolarSystem my_system;

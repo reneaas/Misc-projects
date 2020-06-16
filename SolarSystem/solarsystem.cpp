@@ -12,6 +12,7 @@ void SolarSystem::Initialize(int number_of_objects, double stepsize)
 {
     m_number_of_objects = number_of_objects;
     m_stepsize = stepsize;
+
     m_stepsize_squared = m_stepsize*m_stepsize;
 
     //Allocate memory for pointers.
@@ -137,29 +138,32 @@ void SolarSystem::AdvancePosition(int j)
         if (k != j){
             rnorm = 0.;
             mass = m_masses[k];
-            for (int l = 0; l < m_dims; l++){
-                diff_vec[l] = m_pos_old[j*m_number_of_objects + l] - m_pos_old[k*m_number_of_objects + l];
-                force[l] = -mass*diff_vec[l];
-                rnorm += diff_vec[l]*diff_vec[l];
-            }
+
+            diff_vec[0] = m_pos_old[j*m_number_of_objects] - m_pos_old[k*m_number_of_objects];
+            diff_vec[1] = m_pos_old[j*m_number_of_objects + 1] - m_pos_old[k*m_number_of_objects + 1];
+            diff_vec[2] = m_pos_old[j*m_number_of_objects + 2] - m_pos_old[k*m_number_of_objects + 2];
+
+            force[0] = -mass*diff_vec[0];
+            force[1] = -mass*diff_vec[1];
+            force[2] = -mass*diff_vec[2];
+
+            rnorm = diff_vec[0]*diff_vec[0] + diff_vec[1]*diff_vec[1] + diff_vec[2]*diff_vec[2];
             rnorm = pow(rnorm, 1.5);
             Grnorm_inv = G*(1./rnorm);
 
-            for (int l = 0; l < m_dims; l++){
-                acc[l] += force[l]*Grnorm_inv;
-            }
+            acc[0] += force[0]*Grnorm_inv;
+            acc[1] += force[1]*Grnorm_inv;
+            acc[2] += force[2]*Grnorm_inv;
         }
     }
 
+    m_acc_old[j*m_number_of_objects + 0] = acc[0];
+    m_acc_old[j*m_number_of_objects + 1] = acc[1];
+    m_acc_old[j*m_number_of_objects + 2] = acc[2];
 
-    for (int l = 0; l < m_dims; l++) m_acc_old[j*m_number_of_objects + l] = acc[l];
-
-    //Update position of the object
-    for (int k = 0; k < m_dims; k++){
-        m_pos_new[j*m_number_of_objects + k] = m_pos_old[j*m_number_of_objects + k]
-                                                + m_vel_old[j*m_number_of_objects + k]*m_stepsize
-                                                + 0.5*acc[k]*m_stepsize_squared;
-    }
+    m_pos_new[j*m_number_of_objects + 0] = m_pos_old[j*m_number_of_objects + 0] + m_vel_old[j*m_number_of_objects + 0]*m_stepsize + 0.5*acc[0]*m_stepsize_squared;
+    m_pos_new[j*m_number_of_objects + 1] = m_pos_old[j*m_number_of_objects + 1] + m_vel_old[j*m_number_of_objects + 1]*m_stepsize + 0.5*acc[1]*m_stepsize_squared;
+    m_pos_new[j*m_number_of_objects + 2] = m_pos_old[j*m_number_of_objects + 2] + m_vel_old[j*m_number_of_objects + 2]*m_stepsize + 0.5*acc[2]*m_stepsize_squared;
 }
 
 
@@ -171,32 +175,36 @@ void SolarSystem::AdvanceVelocity(int j)
     double mass, rnorm, Grnorm_inv;
     //Compute acceleration using the new positions:
     for (int k = 0; k < m_number_of_objects; k++){
-        mass = m_masses[k];
         if (k != j){
             rnorm = 0.;
             mass = m_masses[k];
-            for (int l = 0; l < m_dims; l++){
-                diff_vec[l] = m_pos_new[j*m_number_of_objects + l] - m_pos_new[k*m_number_of_objects + l];
-                force[l] = -mass*diff_vec[l];
-                rnorm += diff_vec[l]*diff_vec[l];
-            }
+
+            diff_vec[0] = m_pos_new[j*m_number_of_objects] - m_pos_new[k*m_number_of_objects];
+            diff_vec[1] = m_pos_new[j*m_number_of_objects + 1] - m_pos_new[k*m_number_of_objects + 1];
+            diff_vec[2] = m_pos_new[j*m_number_of_objects + 2] - m_pos_new[k*m_number_of_objects + 2];
+
+            force[0] = -mass*diff_vec[0];
+            force[1] = -mass*diff_vec[1];
+            force[2] = -mass*diff_vec[2];
+
+            rnorm = diff_vec[0]*diff_vec[0] + diff_vec[1]*diff_vec[1] + diff_vec[2]*diff_vec[2];
             rnorm = pow(rnorm, 1.5);
             Grnorm_inv = G*(1./rnorm);
 
-            for (int l = 0; l < m_dims; l++){
-                acc[l] += force[l]*Grnorm_inv;
-            }
+            acc[0] += force[0]*Grnorm_inv;
+            acc[1] += force[1]*Grnorm_inv;
+            acc[2] += force[2]*Grnorm_inv;
         }
     }
 
-    for (int l = 0; l < m_dims; l++) m_acc_new[j*m_number_of_objects + l] = acc[l];
+    m_acc_new[j*m_number_of_objects + 0] = acc[0];
+    m_acc_new[j*m_number_of_objects + 1] = acc[1];
+    m_acc_new[j*m_number_of_objects + 2] = acc[2];
 
     //Compute new velocities
-    for (int k = 0; k < m_dims; k++){
-        m_vel_new[j*m_number_of_objects + k] = m_vel_old[j*m_number_of_objects + k]
-                                                + 0.5*(m_acc_old[j*m_number_of_objects + k]
-                                                + acc[k])*m_stepsize;
-    }
+    m_vel_new[j*m_number_of_objects + 0] = m_vel_old[j*m_number_of_objects + 0] + 0.5*(m_acc_old[j*m_number_of_objects + 0] + acc[0])*m_stepsize;
+    m_vel_new[j*m_number_of_objects + 1] = m_vel_old[j*m_number_of_objects + 1] + 0.5*(m_acc_old[j*m_number_of_objects + 1] + acc[1])*m_stepsize;
+    m_vel_new[j*m_number_of_objects + 2] = m_vel_old[j*m_number_of_objects + 2] + 0.5*(m_acc_old[j*m_number_of_objects + 2] + acc[2])*m_stepsize;
 }
 
 void SolarSystem::Swap()
@@ -219,6 +227,7 @@ void SolarSystem::WriteToFile()
 {
     double CM_pos[m_dims] = {0., 0., 0.};
     double mass_inv;
+    /*
     for (int i = 0; i < m_number_of_objects; i++){
         mass_inv = m_masses[i]*m_total_mass_inv;
         for (int j = 0; j < m_dims; j++){
@@ -231,6 +240,7 @@ void SolarSystem::WriteToFile()
             m_pos_new[i*m_number_of_objects + j] -= CM_pos[j];
         }
     }
+    */
 
 
     for (int i = 0; i < m_number_of_objects; i++){
