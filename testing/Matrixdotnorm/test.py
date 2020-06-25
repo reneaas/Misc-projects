@@ -1,11 +1,13 @@
 import numpy as np
-from time import time
+import time
 
-N = 15000
-A = np.random.normal(0,1, (N,N))
-B = np.random.normal(0,1, (N,N))
+n = 20000
+A = np.random.randn(n,n).astype('float64')
+B = np.random.randn(n,n).astype('float64')
 
-start = time()
-norm = np.linalg.norm(A@B)
-end = time()
-print("Timeused = ", end-start)
+
+start_time = time.time()
+norm = np.linalg.norm(A @ B)
+end_time = time.time()
+print("Took {} seconds".format(end_time-start_time))
+print("norm = ", norm)
