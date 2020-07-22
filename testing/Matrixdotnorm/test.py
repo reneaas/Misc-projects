@@ -1,7 +1,7 @@
 import numpy as np
 import time
 
-n = 20000
+n = 15000
 A = np.random.randn(n,n).astype('float64')
 B = np.random.randn(n,n).astype('float64')
 
