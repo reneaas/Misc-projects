@@ -35,3 +35,10 @@ start_time = time.time()
 F = np.fft.fft(func_vals)
 end_time = time.time()
 print("FFT: Took {} seconds".format(end_time-start_time))
+
+
+"""
+ubuntu 20.04
+https://browser.geekbench.com/v5/cpu/3029256/claim?key=131284
+
+"""
