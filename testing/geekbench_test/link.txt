@@ -1,4 +1,0 @@
-https://browser.geekbench.com/v5/cpu/compare/3020295?baseline=3020258
-
-https://browser.geekbench.com/v5/cpu/3020295/claim?key=706187
-
