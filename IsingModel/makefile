@@ -1,6 +1,6 @@
 CXXFLAGS1= -O3 -march=native -mtune=native
 NAMES = main.cpp ising2d.cpp
-CXXFLAGS_OMP= -O3 -fopenmp -march=native
+CXXFLAGS_OMP= -O3 -fopenmp -march=native -mtune=native
 NAMES_OMP = main.cpp ising2d.cpp
 CXXFLAGS_MPI= -O3 -march=native -fopenmp
 NAMES_MPI= ising2d.cpp main_mpi.cpp
