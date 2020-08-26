@@ -22,26 +22,32 @@ void MonteCarloIntegrator::UniformIntegration(double f(double x))
   rand_max = 100000;
   normalizing_factor = 1./((double) rand_max);
 
-  #if defined(_OPENMP)
+  #ifdef _OPENMP
   {
     rand_max = 100000;
     normalizing_factor = 1./((double) rand_max);
-    #pragma omp parallel private(i, rand_max, u, x, normalizing_factor)
+    //unsigned int seed = time(NULL);
+
+    #pragma omp parallel private(i, u, x)
     {
+      double start = omp_get_wtime();
       int id = omp_get_thread_num();
-      srand(id);   //Specify a unique seed for each thread.
+      int cache_line = 42;
+      unsigned int seed = id + cache_line;
       #pragma omp for reduction(+:Integral)
       for (i = 0; i < m_MCsamples; i++){
-        u = (rand() % rand_max)*normalizing_factor;
-        //u = rand();
-        printf("u = %lf\n", u);
+        u = (rand() % rand_max)*normalizing_factor;   //Not thread-safe RNG.
+        //u = (rand_r(&seed) % rand_max)*normalizing_factor; //Thread-safe RNG.
         x = (m_b - m_a)*u + m_a;
-        printf("x = %lf\n", x);
         Integral += f(x);
       }
+      double end = omp_get_wtime();
+      double timeused = end-start;
+      printf("timeused = %lf\n", timeused);
     }
     Integral = Integral / ((double) m_MCsamples);
     printf("Integral = %lf\n", Integral);
+
   }
   #else
   {

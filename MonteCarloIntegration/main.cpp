@@ -11,7 +11,7 @@ using namespace std;
 double f(double);
 
 int main(int argc, char const *argv[]) {
-  int MC_samples = 1024;
+  int MC_samples = 1000000000;
   double a = 0;
   double b = 100;
   MonteCarloIntegrator Integrator;
