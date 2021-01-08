@@ -1,0 +1,52 @@
+#include "vmc.hpp"
+
+#include <armadillo>
+#include <iostream>
+#include <omp.h>
+
+using namespace std;
+
+int main(int argc, char const *argv[]) {
+    int n_particles = std::atoi(argv[1]);
+    int dims = 3;
+    double step_sz = 0.01;
+    double alpha = 0.2;
+    int mc_samples = pow(2,21);
+    int therm_samples = 1e3;
+    int n = 50;
+    int bootstrap_samples = 1e2;
+    string filename;
+    string sampling = "importance_sampling";
+    double mean_energy, stddev;
+    double beta = 2.82843;
+    // double beta = 1;
+    // double start = omp_get_wtime();
+    // for (int i = 0; i < n; i++){
+    //     alpha = 0.25 + 0.01*i;
+    //     cout << "alpha = " << alpha << endl;
+    //     // filename = "results/non_interacting/mean_energy_"  + sampling + "_" + to_string(dims) + "_" + to_string(n_particles) + "_" + to_string(i) + ".txt";
+    //     // VMC my_solver(n_particles, dims, step_sz, alpha, sampling);
+    //     filename = "results/interacting/mean_energy_"  + sampling + "_" + to_string(dims) + "_" + to_string(n_particles) + "_" + to_string(i) + ".txt";
+    //     VMC my_solver(n_particles, dims, step_sz, alpha, beta, sampling);
+    //     my_solver.monte_carlo_sim(mc_samples, therm_samples);
+    //     // my_solver.bootstrap(&mean_energy, &stddev, bootstrap_samples);
+    //     // std::cout << "E = " << mean_energy << " ; " << "stddev = " << stddev << std::endl;
+    //     my_solver.write_to_file(filename);
+    // }
+    // double end = omp_get_wtime();
+    // double timeused = end-start;
+    // cout << "timeused = " << timeused << endl;
+
+
+    alpha = 0.5;
+    sampling = "importance_sampling";
+    std::string outfilename = "results/one_body_density_interacting_" + to_string(n_particles) + ".txt";
+    VMC my_solver(n_particles, dims, step_sz, alpha, beta, sampling);
+    double start = omp_get_wtime();
+    my_solver.one_body_density(mc_samples, therm_samples, outfilename);
+    double end = omp_get_wtime();
+    double timeused = end-start;
+    std::cout << "time used = " << timeused << std::endl;
+    // VMC my_solver(n_particles, dims, step_sz, alpha, beta, sampling);
+    return 0;
+}

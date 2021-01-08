@@ -1,3 +1,0 @@
-Lines: 2 LineLength: 3
-0 2 4
-2 1 5
