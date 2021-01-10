@@ -1,6 +1,6 @@
 # Miscellaneous projects
 
-This repository contains various different projects of different sizes that doesn't deserve its own repository. So far the list of projects are:
+This repository contains various different projects of different sizes that doesn't call for its own repository. So far the list of projects are:
 
 1. [2D diffusion equation solver](https://github.com/reneaas/Misc-projects/tree/master/diffusion_eq)
 2. [Double pendulum](https://github.com/reneaas/Misc-projects/tree/master/double_pendulum)
