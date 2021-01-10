@@ -8,4 +8,4 @@ This repository contains various different projects of different sizes that does
 4. [A simplified version of Monopoly](https://github.com/reneaas/Misc-projects/tree/master/monopoly)
 5. [The restricted Boltzmann machine in C, C++ and Python](https://github.com/reneaas/Misc-projects/tree/master/restricted_boltzmann_machine)
 6. [Solar system solver](https://github.com/reneaas/Misc-projects/tree/master/solar_system)
-7. [A variational Monte Carlo solver for interacting Bosons in an elliptical harmonic oscillator](https://github.com/reneaas/Misc-projects/tree/master/vmc_bosons)
+7. [A variational Monte Carlo solver for interacting bosons in an elliptical harmonic oscillator](https://github.com/reneaas/Misc-projects/tree/master/vmc_bosons)
