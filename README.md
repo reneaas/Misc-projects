@@ -1,25 +1,11 @@
-## Machine learning algorithms
+# Miscellaneous projects
 
-This repository serves as my pavement to explore machine learning models. The codes are of course free to use and you may use them at your own wit.
+This repository contains various different projects of different sizes that doesn't deserve its own repository. So far the list of projects are:
 
-### Restricted Boltzmann Machine (RBM)
-I've implemented a RBM in Python, C and C++. The C-version is naturally function based, while the versions in Python and C++ are both object-oriented for an easy-to-use framework.
-
-1. [Python codes](https://github.com/reneaas/MachineLearning/tree/master/RestrictedBoltzmannMachine/Python_codes)
-2. [C codes](https://github.com/reneaas/MachineLearning/tree/master/RestrictedBoltzmannMachine/C_codes)
-3. [C++ codes](https://github.com/reneaas/MachineLearning/tree/master/RestrictedBoltzmannMachine/Cpp_codes)
-
-### Clustering
-Hitherto, I've implemented K-means clustering algorithm based on a simple two-layered neural network as a object-oriented C++ code.
-
-- [Here are the codes](https://github.com/reneaas/MachineLearning/tree/master/Clustering/Cpp_codes)
-
-## Other algorithms
-
-### 2D Diffusion Equation solver
-
-- [The 2D diffusion equation solver ](https://github.com/reneaas/MachineLearning/blob/master/DiffusionEquation/diffusion_solver.cpp)
-
-For information on how to compile and run the codes, see
-[diffusion_eq](https://github.com/reneaas/MachineLearning/tree/master/DiffusionEquation). Here you find a README explaining the details.
-A detailed analysis of the method used can be found in this [report](https://github.com/reneaas/ComputationalPhysics/blob/master/projects/project5/report/Project_5.pdf).
+1. [2D diffusion equation solver](https://github.com/reneaas/Misc-projects/tree/master/diffusion_eq)
+2. [Double pendulum](https://github.com/reneaas/Misc-projects/tree/master/double_pendulum)
+3. [2D Ising model in C and C++](https://github.com/reneaas/Misc-projects/tree/master/ising_model)
+4. [A simplified version of Monopoly](https://github.com/reneaas/Misc-projects/tree/master/monopoly)
+5. [The restricted Boltzmann machine in C, C++ and Python](https://github.com/reneaas/Misc-projects/tree/master/restricted_boltzmann_machine)
+6. [Solar system solver](https://github.com/reneaas/Misc-projects/tree/master/solar_system)
+7. [A variational Monte Carlo solver for interacting Bosons in an elliptical harmonic oscillator](https://github.com/reneaas/Misc-projects/tree/master/vmc_bosons)
