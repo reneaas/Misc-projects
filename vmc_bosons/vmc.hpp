@@ -15,6 +15,7 @@ private:
 
     double E_mean_, EE_mean_;
     arma::vec energies_, radii_;
+        // (*force).col(i) = tmp;
 
     std::string sampling_;
 
@@ -34,6 +35,7 @@ private:
     double (VMC::*trial_fn)(Particle *particle);
     void (VMC::*metropolis)(Particle *particle, double *last_trial, double *energy);
     void (VMC::*quantum_force)(arma::mat *pos, arma::mat *force);
+    double (VMC::*laplacian)(Particle *particle);
 
     //Brute force sampling
     void gen_trial_pos_bf(Particle *particle);
@@ -51,6 +53,7 @@ private:
     //Interacting Bosons
     double loc_energy_with_int(Particle *particle);
     double trial_fn_with_int(Particle *particle);
+    double laplacian_with_int(Particle *particle);
 
 
     void metropolis_one_body_density(Particle *particle, double *last_trial, double *r);
@@ -64,14 +67,15 @@ public:
     // VMC(int n_particles, double step_sz, double alpha, std::string sampling);
     double monte_carlo_sim(int mc_samples, int therm_samples);
     void one_body_density(int mc_samples, int therm_samples, std::string filename);
-    void write_to_file(std::string filename);
-    void write_to_file_all(std::string filename);
+    double optimize(int max_iter);
 
     //Statistical analysis
     void bootstrap(double *mean_energy, double *stddev, int bootstrap_samples);
     void blocking(double *mean_energy, double *stddev, int blocking_transforms);
 
-    void test();
+    void write_to_file(std::string filename);
+    void write_to_file_all(std::string filename);
+
 };
 
 #endif

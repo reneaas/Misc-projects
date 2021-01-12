@@ -17,7 +17,7 @@ size_of_dataset = 60000;
 #Initialize the model
 my_rbm = rbm(nvisible=28*28,
             nhidden=14*14,
-            eta = 0.08,
+            eta = 0.1,
             momentum = 0.9,
             nCDsteps = 25,
             nepochs = 500,

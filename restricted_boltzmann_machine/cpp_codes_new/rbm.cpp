@@ -11,11 +11,15 @@ RBM::RBM(int n_visible, int n_hidden, double eta, double mom){
     visible_bias_ = arma::randn<arma::vec>(n_visible_)*0.01;
     hidden_bias_ = arma::randn<arma::vec>(n_hidden_)*0.01;
 
+
     visible_act_ = arma::vec(n_visible_).fill(0.);
     hidden_act_ = arma::vec(n_hidden_).fill(0.);
     dW_ = arma::mat(n_visible_, n_hidden_).fill(0.);
     dvb_ = arma::vec(n_visible_).fill(0.);
     dhb_ = arma::vec(n_hidden_).fill(0.);
+
+    std::cout << "dW rows = " << dW_.n_rows << std::endl;
+    std::cout << "dW cols = " << dW_.n_cols << std::endl;
 }
 
 arma::vec RBM::sigmoid(arma::vec x){
@@ -52,7 +56,7 @@ void RBM::fit(arma::mat data, int epochs, int batch_sz, int nCDsteps){
             arma::vec x = data.col(idx);
 
             visible_act_.swap(x);
-            visible_act();
+            hidden_act();
 
             //Positive phase
             arma::mat CDpos = visible_act_*hidden_prob_.t(); //Outer product
@@ -70,12 +74,13 @@ void RBM::fit(arma::mat data, int epochs, int batch_sz, int nCDsteps){
             arma::vec CDneg_hb = hidden_prob_;
 
             dW_ += eta_*(CDpos - CDneg);
-            dvb += eta_*(CDpos_vb - CDneg_vb);
-            dhb += eta_*(CDpos_hb - CDneg_hb);
+            dvb_ += eta_*(CDpos_vb - CDneg_vb);
+            dhb_ += eta_*(CDpos_hb - CDneg_hb);
+
         }
         dW_ *= batch_sz_inv;
-        dvb *= batch_sz_inv;
-        dhb *= batch_sz_inv;
+        dvb_ *= batch_sz_inv;
+        dhb_ *= batch_sz_inv;
 
         weights_ += dW_;
         visible_bias_ += dvb_;
@@ -95,4 +100,6 @@ arma::vec RBM::predict(arma::vec x){
         hidden_act();
         visible_act();
     }
+
+    return visible_act_;
 }

@@ -40,7 +40,7 @@ class rbm:
         self.loss = np.zeros(self.nepochs)
         self.data_matrix = np.zeros((self.size_of_dataset, self.nvisible))
 
-    def sigmoidal(self, x):
+    def sigmoid(self, x):
         """Activation function"""
         return 1./(1. + np.exp(-x))
 
@@ -52,7 +52,7 @@ class rbm:
         hidden: an array containing the activations of the hidden nodes.
         """
         u = np.random.uniform(0,1.0,self.nvisible)
-        self.visibleprob = self.sigmoidal(self.visiblebias + np.dot(self.weights, hidden))
+        self.visibleprob = self.sigmoid(self.visiblebias + np.dot(self.weights, hidden))
         self.visibleact = self.visibleprob > u
         return [self.visibleprob, self.visibleact]
 
@@ -63,7 +63,7 @@ class rbm:
         visible: array containing the activations of the visible nodes.
         """
         u = np.random.uniform(0,1,self.nhidden)
-        self.hiddenprob = self.sigmoidal(self.hiddenbias + np.dot(self.weights.T, visible))
+        self.hiddenprob = self.sigmoid(self.hiddenbias + np.dot(self.weights.T, visible))
         self.hiddenact = self.hiddenprob > u
         return [self.hiddenprob, self.hiddenact]
 

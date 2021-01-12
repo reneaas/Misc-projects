@@ -40,6 +40,7 @@ VMC::VMC(int n_particles, int dims, double step_sz, double alpha, double beta, s
     loc_energy = &VMC::loc_energy_with_int;
     trial_fn = &VMC::trial_fn_with_int;
     quantum_force = &VMC::quantum_force_elliptical;
+    laplacian = &VMC::laplacian_with_int;
 
     if (sampling == "brute_force"){
         gen_trial_pos = &VMC::gen_trial_pos_bf;
@@ -52,7 +53,6 @@ VMC::VMC(int n_particles, int dims, double step_sz, double alpha, double beta, s
         sqrt_step_sz_ = sqrt(step_sz_);
     }
 }
-
 
 
 void VMC::gen_trial_pos_bf(Particle *particle){
@@ -92,21 +92,19 @@ void VMC::quantum_force_elliptical(arma::mat *pos, arma::mat *force){
     (*force) = -4*alpha_*(*pos);
     (*force).row(2) *= beta_;
 
-    arma::vec diff, ri, rj, tmp;
-    double r_ij, dudr;
     for (int i = 0; i < n_particles_; i++){
-        ri = (*pos).col(i);
-        tmp = (*force).col(i);
+        arma::vec ri = (*pos).col(i);
+        arma::vec tmp = (*force).col(i);
         for (int j = 0; j < n_particles_; j++){
             if (i != j){
-                rj = (*pos).col(j);
-                diff = ri - rj;
-                r_ij = arma::norm(diff);
-                dudr = a_/(r_ij*(r_ij - a_));
+                arma::vec rj = (*pos).col(j);
+                arma::vec diff = ri - rj;
+                double r_ij = arma::norm(diff);
+                double dudr = a_/(r_ij*(r_ij - a_));
                 tmp += 2*diff*dudr/r_ij;
             }
         }
-        (*force).col(i) = tmp;
+        (*force).col(i) += tmp;
     }
 }
 
@@ -229,7 +227,7 @@ void VMC::bootstrap(double *mean_energy, double *stddev, int bootstrap_samples){
             for (int i = 0; i < bootstrap_samples; i++){
                 arma::uvec idx = arma::randi<arma::uvec>(n, arma::distr_param(0, n-1));
                 tmp = energies_(idx);
-                bootstrap_mean(i) = arma::mean(tmp);
+                bootstrap_mean.at(i) = arma::mean(tmp);
             }
         }
     }
@@ -238,7 +236,7 @@ void VMC::bootstrap(double *mean_energy, double *stddev, int bootstrap_samples){
         for (int i = 0; i < bootstrap_samples; i++){
             arma::uvec idx = arma::randi<arma::uvec>(n, arma::distr_param(0, n-1));
             tmp = energies_(idx);
-            bootstrap_mean(i) = arma::mean(tmp);
+            bootstrap_mean.at(i) = arma::mean(tmp);
         }
     }
     #endif
@@ -252,16 +250,13 @@ void VMC::bootstrap(double *mean_energy, double *stddev, int bootstrap_samples){
 Trial function with Jastrow factor.
 */
 double VMC::trial_fn_with_int(Particle *particle){
-    arma::vec ri, rj, diff;
-
-    double r_ij;
     double jastrow = 1.;
     for (int i = 0; i < n_particles_-1; i++){
-        ri = particle->trial_pos_.col(i);
+        arma::vec ri = particle->trial_pos_.col(i);
         for (int j = i+1; j < n_particles_; j++){
-            rj = particle->trial_pos_.col(j);
-            diff = ri-rj;
-            r_ij = arma::norm(diff);
+            arma::vec rj = particle->trial_pos_.col(j);
+            arma::vec diff = ri-rj;
+            double r_ij = arma::norm(diff);
             if (r_ij <= a_){
                 return 0.;
             }
@@ -275,22 +270,17 @@ double VMC::trial_fn_with_int(Particle *particle){
     return exp(-2*alpha_*r)*jastrow;
 }
 
-/*
-Local energy in the interacting case.
-*/
-double VMC::loc_energy_with_int(Particle *particle){
-    double energy = 0.;
 
-    energy += 2*alpha_*(2+beta_)*n_particles_;
-
+double VMC::laplacian_with_int(Particle *particle){
+    double laplacian = 0.;
+    laplacian += 2*alpha_*(2+beta_)*n_particles_;
     for (int i = 0; i < n_particles_; i++){
         arma::vec ri = particle->pos_.col(i);
-        energy -= 4*alpha_*alpha_*(ri.at(0)*ri.at(0) + ri.at(1)*ri.at(1) + beta_*beta_*ri.at(2)*ri.at(2));
+        laplacian -= 4*alpha_*alpha_*(ri.at(0)*ri.at(0) + ri.at(1)*ri.at(1) + beta_*beta_*ri.at(2)*ri.at(2));
 
         arma::vec grad_phi = -2*alpha_*ri;
         grad_phi.at(2) *= beta_;
-
-        arma::vec grad_u = arma::vec(dims_).fill(0.);
+        arma::vec grad_u = arma::vec(3).fill(0.);
         for (int j = 0; j < n_particles_; j++){
             if (i != j){
                 arma::vec rj = particle->pos_.col(j);
@@ -301,17 +291,26 @@ double VMC::loc_energy_with_int(Particle *particle){
 
                 grad_u += diff*dudr/r_ij;
 
-                energy -= (d2udr2 + 2*dudr/r_ij);
+                laplacian -= (d2udr2 + 2*dudr/r_ij);
             }
 
         }
-        energy -= 2*arma::dot(grad_phi, grad_u);
-        energy -= arma::dot(grad_u, grad_u);
+        laplacian -= 2*arma::dot(grad_phi, grad_u);
+        laplacian -= arma::dot(grad_u, grad_u);
     }
+    return laplacian;
+}
 
+
+double VMC::loc_energy_with_int(Particle *particle){
+    double energy = 0.;
+    energy += (this->*laplacian)(particle); //Add the contriution from the laplacian part of the local energy
+
+    //Add the contribution from the potential part of the local energy
     arma::mat r_mat = particle->pos_;
     r_mat.row(2) *= beta_;
     energy += arma::dot(r_mat, r_mat);
+
     return 0.5*energy;
 }
 
@@ -338,6 +337,7 @@ void VMC::metropolis_one_body_density(Particle *particle, double *last_trial, do
 }
 
 
+
 /*
 Stores L^2-norm of particle 0 in an array.
 */
@@ -350,7 +350,7 @@ void VMC::one_body_density(int mc_samples, int therm_samples, std::string filena
     {
         #pragma omp parallel private(r)
         {
-            arma::arma_rng::set_seed(omp_get_thread_num()+40);
+            arma::arma_rng::set_seed(omp_get_thread_num()+40);double mean_energy = monte_carlo_sim(mc_samples, therm_samples);
             Particle particle(n_particles_, dims_, sampling_);
             // energy = (this->*loc_energy)(&particle); //Initial energy of the system
             double last_trial = (this->*trial_fn)(&particle);

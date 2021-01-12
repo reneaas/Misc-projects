@@ -1,23 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-infilename = "results/data/full_system.txt"
+infilename = "results/full_system.txt"
 n = 10
 dims = 3
 
-x, y, z = [], [], []
-with open(infilename, "r") as infile:
-    lines = infile.readlines()
-    timesteps = int(len(lines)/n)
-    tmp = np.zeros([timesteps*n, dims])
-    for t in range(timesteps*n):
-        vals = lines[t].split()
-        tmp[t,0] =float(vals[0])
-        tmp[t,1] = float(vals[1])
-        tmp[t,2] = float(vals[2])
+def read_data(infilename):
+    x, y, z = [], [], []
+    with open(infilename, "r") as infile:
+        lines = infile.readlines()
+        timesteps = int(len(lines)/n)
+        tmp = np.zeros([timesteps*n, dims])
+        for t in range(timesteps*n):
+            vals = lines[t].split()
+            tmp[t,0] =float(vals[0])
+            tmp[t,1] = float(vals[1])
+            tmp[t,2] = float(vals[2])
 
-R = np.zeros([timesteps, n, dims])
-R.flat[:] = tmp.flat[:]
+    R = np.zeros([timesteps, n, dims])
+    R.flat[:] = tmp.flat[:]
+    return R
+
+R = read_data(infilename=infilename)
 
 for i in range(n):
     x = R[:,i, 0]

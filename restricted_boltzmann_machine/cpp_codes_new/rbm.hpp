@@ -19,8 +19,9 @@ private:
     void hidden_act();
 
 public:
-    RBM(int n_visible, int n_hidden);
-    void fit(arma::mat data);
+    RBM(int n_visible, int n_hidden, double eta, double mom);
+    void fit(arma::mat data, int epochs, int batch_sz, int nCDsteps);
+    arma::vec predict(arma::vec x);
 
 };
 
