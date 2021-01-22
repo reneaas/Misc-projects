@@ -3,7 +3,9 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import time
 import os
-from rbm import rbm
+# from rbm import rbm
+from einsum_rbm import rbm
+# from torch_rbm import rbm
 
 print("Downloading dataset...")
 mnist = tf.keras.datasets.mnist
@@ -20,9 +22,18 @@ my_rbm = rbm(nvisible=28*28,
             eta = 0.1,
             momentum = 0.9,
             nCDsteps = 25,
-            nepochs = 500,
-            batch_size = 100,
+            nepochs = 50,
+            batch_size = 1000,
             size_of_dataset = size_of_dataset)
+
+# my_rbm = rbm(n_visible=28*28,
+#             n_hidden=14*14,
+#             eta = 0.1,
+#             mom = 0.9,
+#             nCDsteps = 25,
+#             epochs = 50,
+#             batch_sz = 10,
+#             sz_of_dataset = size_of_dataset)
 
 print("Preparing data...")
 training_data = np.zeros((size_of_dataset, 28*28))

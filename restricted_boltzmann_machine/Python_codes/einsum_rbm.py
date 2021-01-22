@@ -52,9 +52,9 @@ class rbm:
         hidden: an array containing the activations of the hidden nodes.
         """
         u = np.random.uniform(0,1.0,self.nvisible)
-        self.visibleprob = self.sigmoid(self.visiblebias + np.dot(self.weights, hidden))
+        self.visibleprob = self.sigmoid(self.visiblebias + np.einsum("ij,kj->ki", self.weights, hidden))
         self.visibleact = self.visibleprob > u
-        return [self.visibleprob, self.visibleact]
+
 
     def compute_hidden(self, visible):
         """Computes P = p(h[j]|v) = 1 for j = 1,2,...,nhidden, and activates node j given that p > u,
@@ -63,9 +63,8 @@ class rbm:
         visible: array containing the activations of the visible nodes.
         """
         u = np.random.uniform(0,1,self.nhidden)
-        self.hiddenprob = self.sigmoid(self.hiddenbias + np.dot(self.weights.T, visible))
+        self.hiddenprob = self.sigmoid(self.hiddenbias + np.einsum("ij,ki->kj", self.weights, visible))
         self.hiddenact = self.hiddenprob > u
-        return [self.hiddenprob, self.hiddenact]
 
 
     def train_model(self, input_data):
@@ -79,9 +78,9 @@ class rbm:
         self.data_matrix = input_data
         N = self.nvisible                                    #Scaling factor used in the learning process.
         #Creates empty arrays to store "differentials".
-        dW = np.zeros((self.nvisible,self.nhidden))
-        dvb = np.zeros(self.nvisible)
-        dhb = np.zeros(self.nhidden)
+        dW = np.zeros((self.batch_size, self.nvisible, self.nhidden))
+        dvb = np.zeros([self.batch_size, self.nvisible])
+        dhb = np.zeros([self.batch_size, self.nhidden])
 
         bar = IncrementalBar("Progress", max = self.nepochs)  #Sets up the progressbar.
         #Trains the RBM using the CD-n algorithm on a single datapoint at the time.
@@ -90,43 +89,41 @@ class rbm:
             shuffled_indices = np.random.permutation(self.batch_size)
             training_data = self.data_matrix[shuffled_indices]
             error = 0
-            for k in range(self.batch_size):
-                visible = training_data[k]
-                #sample hidden variables
-                self.compute_hidden(visible)
 
-                #compute <vh>_0
-                CDpos = np.tensordot(visible, self.hiddenprob, axes = 0)     #Tensor product computes a matrix of shape (nvisible x nhidden)
-                CDpos_vb = visible                                          #Simply the initial state of the visible nodes.
-                CDpos_hb = self.hiddenprob                                  #The first computed state of the hidden nodes.
 
-                #CD-n, if nCDsteps = 1, this is essentially just reconstrunction of the input.
-                #Choosing nCDsteps = 1 works alright and is computationally effective.
-                for j in range(self.nCDsteps):
-                    self.compute_visible(self.hiddenact)
-                    self.compute_hidden(self.visibleact)
-                #self.compute_visible(self.hiddenprob)
-                #self.compute_hidden(self.visibleact)
+            self.compute_hidden(training_data)
 
-                #Computes <vh>_n
-                CDneg = np.tensordot(self.visibleact, self.hiddenprob, axes = 0)
-                CDneg_vb = self.visibleact
-                CDneg_hb = self.hiddenprob
 
-                #This is where the learning happens, you can skip the momentum if you want but it speeds up initial learning
-                #You can modifiy the class to add decay, that is add -self.decay*dW to the learning rule, or reduce the momentum towards the end of learning.
 
-                #Reconstruction error. It measures how well the RBM reconstructs the data it's shown.
-                visible = training_data[k]
-                error += np.sum((self.data_matrix[k]-self.visibleact)**2)
-                dW = self.eta*(CDpos - CDneg)/N + self.momentum*dW
-                self.weights += dW
-                dvb = self.eta*(CDpos_vb - CDneg_vb)/N + self.momentum*dvb
-                self.visiblebias += dvb
-                dhb = self.eta*(CDpos_hb - CDneg_hb)/N + self.momentum*dhb
-                self.hiddenbias += dhb
-            error /= self.batch_size
+            self.compute_visible(self.hiddenact)
+
+            CDpos = np.einsum("ki,kj->kij", training_data, self.hiddenprob)
+
+
+            CDpos_vb = training_data
+            CDpos_hb = self.hiddenprob
+
+            for j in range(self.nCDsteps):
+                self.compute_visible(self.hiddenact)
+                self.compute_hidden(self.visibleact)
+
+            CDneg = np.einsum("ki,kj->kij", self.visibleact, self.hiddenprob)
+            CDneg_vb = self.visibleact
+            CDneg_hb = self.hiddenprob
+
+            tmp = training_data - self.visibleact
+
+
+
+            error = np.einsum("ij,ij->", tmp, tmp)/self.batch_size
             self.loss[epoch] = error
+
+            dW = self.eta*(CDpos - CDneg)/N + self.momentum*dW
+            self.weights += np.einsum("ijk->jk", dW)
+            dvb = self.eta*(CDpos_vb - CDneg_vb)/N + self.momentum*dvb
+            self.visiblebias += np.einsum("ij->j", dvb)
+            dhb = self.eta*(CDpos_hb - CDneg_hb)/N + self.momentum*dhb
+            self.hiddenbias += np.einsum("ij->j", dhb)
         bar.finish()
 
 
