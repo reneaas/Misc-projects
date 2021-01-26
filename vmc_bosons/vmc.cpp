@@ -162,7 +162,7 @@ double VMC::monte_carlo_sim(int mc_samples, int therm_samples){
     {
         #pragma omp parallel private(energy, energy_sq) reduction(+:E_mean, EE_mean)
         {
-            arma::arma_rng::set_seed(omp_get_thread_num()+42);
+            arma::arma_rng::set_seed(omp_get_thread_num() + 42);
             Particle particle(n_particles_, dims_, sampling_);
             energy = (this->*loc_energy)(&particle); //Initial energy of the system
             double last_trial = (this->*trial_fn)(&particle);

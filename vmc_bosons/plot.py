@@ -24,7 +24,7 @@ for i in range(n):
 
 E = np.array(E)
 plt.plot(alpha, E/n_particles, label=f"interacting; n = {n_particles}")
-# plt.fill_between(alpha, E - std, E + std, color="gray", alpha=0.2)
+plt.fill_between(alpha, E - std, E + std, color="gray", alpha=0.2)
 # plt.scatter(alpha, E, label="datapoints", marker="*", color="r")
 plt.xlabel("alpha")
 plt.ylabel("Energy")

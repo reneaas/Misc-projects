@@ -4,8 +4,8 @@ import seaborn as sns
 import pandas as pd
 
 files = ["results/one_body_density_interacting_1.txt",\
-        "results/one_body_density_interacting_100.txt"]
-        # "results/one_body_density_interacting_10.txt",\
+        "results/one_body_density_interacting_10.txt"]
+        # "results/one_body_density_interacting_100.txt",\
         # "results/one_body_density_interacting_50.txt",\
 
 
@@ -26,7 +26,7 @@ for infilename in files:
 # R = np.array(R)
 R = np.array(R)
 R = R.T
-df = pd.DataFrame(R, columns = ["non-interacting; n = 1", "interacting; n = 100"])
+df = pd.DataFrame(R, columns = ["non-interacting; n = 1", "interacting; n = 10"])
 # df = pd.DataFrame(R, index=["non-interacting", "interacting"])
 # print(df)
 fontsize = 14
