@@ -14,7 +14,6 @@ SpinSystem::SpinSystem(int L, std::string spin_config){
     init_observables();
 }
 
-
 /*
 Helper function to compute the initial conditions of the system.
 */
@@ -41,10 +40,15 @@ int SpinSystem::spin_mat(int i, int j){
     return spin_mat_.at(idx(i), idx(j));
 }
 
-
 /*
 Implements periodic boundary conditions
 */
 int SpinSystem::idx(int index){
     return (index + L_) % L_;
+}
+
+void SpinSystem::add_to_cluster(int i, int j, double acceptance_prob){
+    if (arma::randu() <= acceptance_prob){
+        cluster_.at(idx(i), idx(j)) = -1;
+    }
 }

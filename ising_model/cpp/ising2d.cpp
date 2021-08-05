@@ -14,6 +14,28 @@ Ising2D::Ising2D(int L, double T, std::string spin_config){
     sampler = &Ising2D::metropolis;
 }
 
+Ising2D::Ising2D(int L, double T, std::string spin_config, std::string sampling_method){
+    L_ = L;
+    n_spins_ = L*L;
+    beta_ = 1./T;
+    spin_config_ = spin_config;
+
+    boltzmann_dist_ = arma::vec(17);
+    for (int i = 0; i < 17; i+=4){
+        boltzmann_dist_.at(i) = exp(-beta_*(i-8));
+    }
+    if (sampling_method == "metropolis"){
+        sampler = &Ising2D::metropolis;
+    }
+    else if (sampling_method == "wollf"){
+        sampler = &Ising2D::wollf:
+        wollf_acceptance_prob_ = 1-exp(-beta_);
+    }
+    else{
+        sampler = &Ising2D::metropolis;  //Defaults if none of the above are true.
+    }
+}
+
 /*
 Implements the metropolis-hastings algorithm applied to the 2D ising model.
 */
@@ -38,6 +60,36 @@ void Ising2D::metropolis(SpinSystem *system){
             system->spin_mat_.at(i, j) *= (-1);
             system->magnetization_ += 2*system->spin_mat_.at(i, j);
         }
+    }
+}
+
+void Ising2D::wollf(SpinSystem *system){
+    system->cluster_.fill(1.);
+    int i = arma::randi(arma::distr_param(0, L_-1));
+    int j = arma::randi(arma::distr_param(0, L_-1));
+    get_cluster(system, i, j);
+    system->spin_mat_ = system->spin_mat_ % system->cluster_;
+}
+
+void Ising2D::get_cluster(SpinSystem *system, int i, int j){
+    if (system->spin_mat(i,j)*system->spin_mat(i+1, j) == 1 || system->cluster(i+1, j) != -1){
+        system->add_to_cluster(i+1, j);
+        get_cluster(system, i+1, j);
+    }
+
+    if (system->spin_mat(i,j)*system->spin_mat(i-1, j) == 1 || system->cluster(i-1, j) != -1){
+        system->add_to_cluster(i-1, j);
+        get_cluster(system, i-1, j);
+    }
+
+    if (system->spin_mat(i,j)*system->spin_mat(i, j+1) == 1 || system->cluster(i, j+1) != -1){
+        system->add_to_cluster(i, j+1);
+        get_cluster(system, i, j+1);
+    }
+
+    if (system->spin_mat(i,j)*system->spin_mat(i, j-1) == 1 || system->cluster(i, j-1) != -1){
+        system->add_to_cluster(i, j-1);
+        get_cluster(system, i, j-1);
     }
 }
 

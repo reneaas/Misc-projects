@@ -12,7 +12,7 @@ private:
     arma::vec boltzmann_dist_;
 
     int L_, n_spins_, dE_;
-    double beta_;
+    double beta_, wollf_acceptance_prob_;
 
     std::string spin_config_;
 
@@ -22,6 +22,11 @@ private:
 
     //Sampling methods
     void metropolis(SpinSystem *system);
+    void wollf(SpinSystem *system);
+
+
+    //Various helper functions
+    void get_cluster(SpinSystem *system, int i, int j);
 
 public:
     Ising2D(int L, double T, std::string spin_config);
