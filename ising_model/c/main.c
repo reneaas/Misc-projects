@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[]) {
     int L = 2;
     double temp = 1.0;
-    int mc_samples = 1e7;
+    int mc_samples = 1e8;
     double T_start = 2.0, T_end = 2.4;
     int n_temps = 10;
     double h = (T_end-T_start)/(n_temps-1);

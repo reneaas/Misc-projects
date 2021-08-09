@@ -19,6 +19,7 @@ public:
 
 
     arma::imat spin_mat_;
+    arma::imat cluster_;
     int L_, n_spins_;
     double energy_, magnetization_;
     double wollf_acceptance_prob_;

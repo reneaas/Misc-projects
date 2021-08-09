@@ -1,7 +1,7 @@
 import os
 
 print("compiling...")
-args = ["g++-10", "-o main.out", "*.cpp", "-Ofast", "-fopenmp", "-larmadillo", "-march=native"]
+args = ["c++", "-o main.out", "*.cpp", "-O3", "-fopenmp"]
 command = " ".join(args)
 os.system(command)
 

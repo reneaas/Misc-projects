@@ -28,7 +28,7 @@ Ising2D::Ising2D(int L, double T, std::string spin_config, std::string sampling_
         sampler = &Ising2D::metropolis;
     }
     else if (sampling_method == "wollf"){
-        sampler = &Ising2D::wollf:
+        sampler = &Ising2D::wollf;
         wollf_acceptance_prob_ = 1-exp(-beta_);
     }
     else{
@@ -72,7 +72,7 @@ void Ising2D::wollf(SpinSystem *system){
 }
 
 void Ising2D::get_cluster(SpinSystem *system, int i, int j){
-    if (system->spin_mat(i,j)*system->spin_mat(i+1, j) == 1 || system->cluster(i+1, j) != -1){
+    if (system->spin_mat(i,j)*system->spin_mat(i+1, j) == 1 || system->cluster_(i+1, j) != -1){
         system->add_to_cluster(i+1, j);
         get_cluster(system, i+1, j);
     }

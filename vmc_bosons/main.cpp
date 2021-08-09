@@ -9,13 +9,14 @@ using namespace std;
 void optimize(double alpha0, int max_iter, int n_particles);
 
 int main(int argc, char const *argv[]) {
-    int n_particles = std::atoi(argv[1]);
+    //int n_particles = std::atoi(argv[1]);
+    int n_particles = 10;
     int dims = 3;
     double step_sz = 0.01;
     double alpha = 0.2;
     int mc_samples = pow(2,21);
     int therm_samples = 1e3;
-    int n = 50;
+    int n = 10;
     int bootstrap_samples = 1e2;
     string filename;
     string sampling = "importance_sampling";
