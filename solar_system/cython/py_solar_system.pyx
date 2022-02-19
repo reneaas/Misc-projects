@@ -2,6 +2,8 @@
 
 from libcpp.vector cimport vector
 from py_solar_system cimport SolarSystem
+import numpy as np
+cimport numpy as np
 
 cdef class PySolarSystem:
     cdef SolarSystem solar_system
@@ -10,13 +12,13 @@ cdef class PySolarSystem:
         self.solar_system = SolarSystem(r0, v0, m)
     
     def get_position(self):
-        return self.solar_system.get_position()
+        return np.asarray(self.solar_system.get_position())
 
     def get_velocity(self):
-        return self.solar_system.get_velocity()
+        return np.asarray(self.solar_system.get_velocity())
 
     def get_force(self):
-        return self.solar_system.get_force()
+        return np.asarray(self.solar_system.get_force())
 
     def step(self, vector[vector[double]] force, double dt):
         self.solar_system.step(force, dt)
