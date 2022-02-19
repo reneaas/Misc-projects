@@ -4,6 +4,7 @@ from tqdm import trange
 import matplotlib.pyplot as plt
 import pyarma as pa
 import sys
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def main():
@@ -26,8 +27,16 @@ def main():
         r[i, ...] = new_pos
         v[i, ...] = new_vel
     
+    #Projection in xy-plane
     for i in range(num_particles):
         plt.plot(r[:, i, 0], r[:, i, 1])
+    plt.show()
+
+    #Full 3D plot of trajectories
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    for i in range(num_particles):
+        ax.plot(xs=r[:, i, 0], ys=r[:, i, 1], zs=r[:, i, 2])
     plt.show()
 
 
