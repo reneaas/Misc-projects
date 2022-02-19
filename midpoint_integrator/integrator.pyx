@@ -9,6 +9,7 @@ cdef extern from "midpoint.cpp":
 
 cdef extern from "midpoint.hpp":
     cdef double midpoint(double a, double b, int n, double f(double x))
+    cdef double mc_integrate(double a, double b, int n, double f(double x))
 
     
 cdef double func(double x):
@@ -18,3 +19,6 @@ cpdef integrate(a, b, n):
     res = midpoint(a, b, n, func)
     return res
 
+cpdef integrate_mc(a, b, n):
+    res = mc_integrate(a, b, n, func)
+    return res
