@@ -121,15 +121,7 @@ def monte_carlo_sim(mc_cycles, L = 16, temp = 1.0):
         spin_system.wolff()
 
         M_mean += abs(spin_system.get_magnetization())
-        # if i % 1 == 0:
-        #     # print(i)
-        #     plt.imshow(spin_system.spin_mat_, cmap = "gray")
-        #     plt.savefig(f"lattice_at_i={i}.pdf")
-        #     plt.close()
-        #     os.system(f"mv lattice_at_i={i}.pdf figures/")
-            # plt.show()
     M_mean /= (mc_cycles*L*L)
-    print("<|M|> = ", M_mean)
 
 def get_magnetization_vs_temp(mc_cycles, L, num_temps):
     T = np.linspace(0.5, 3.0, num_temps)
@@ -162,8 +154,11 @@ def get_magnetization_vs_temp(mc_cycles, L, num_temps):
     plt.xlabel("T/J")
     plt.savefig("magnetization_squared_per_spin_site_L=16.pdf")
     plt.close()
-start = time()
-# monte_carlo_sim(mc_cycles = 1000)
-get_magnetization_vs_temp(500, 16, 20)
-end = time()
-print("timeused = ", end-start, " seconds")
+
+
+if __name__ == "__main__":
+    # monte_carlo_sim(mc_cycles = 1000)
+    start = time()
+    get_magnetization_vs_temp(500, 16, 20)
+    end = time()
+    print("timeused = ", end-start, " seconds")

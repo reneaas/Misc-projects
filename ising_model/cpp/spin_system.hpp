@@ -15,14 +15,12 @@ private:
 public:
     SpinSystem(int L, std::string spin_config);
     int spin_mat(int i, int j);
-    void add_to_cluster(int i, int j, double acceptance_prob);
 
 
     arma::imat spin_mat_;
     arma::imat cluster_;
     int L_, n_spins_;
     double energy_, magnetization_;
-    double wollf_acceptance_prob_;
 };
 
 #endif

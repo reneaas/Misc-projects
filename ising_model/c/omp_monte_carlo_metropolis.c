@@ -54,15 +54,10 @@ void omp_monte_carlo_metropolis(int mc_samples, double temp, int L)
     }
     //Compute mean value of all samples.
     double mc_inv = 1./mc_samples;
-    double n_spins_inv = 1./(L*L);
-    double norm = mc_inv*n_spins_inv;
-    E_mean *= norm;
-    EE_mean *= norm;
-    M_mean *= norm;
-    MM_mean *= norm;
-
-    //printf("<E> = %lf\n", E_mean);
-
+    E_mean *= mc_inv;
+    EE_mean *= mc_inv;
+    M_mean *= mc_inv;
+    MM_mean *= mc_inv;
 
     free(spin_matrix);
     free(idx);

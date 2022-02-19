@@ -63,28 +63,28 @@ void VMC::gen_trial_pos_bf(Particle *particle){
 void VMC::gen_trial_pos_is(Particle *particle){
     particle->old_force_.swap(particle->new_force_); //Swap the force matrices.
     arma::mat xi = arma::randn(dims_, n_particles_);
-    particle->trial_pos_ = particle->pos_ + D_*particle->old_force_*step_sz_ + xi*sqrt_step_sz_;
+    particle->trial_pos_ = particle->pos_ + D_ * particle->old_force_ * step_sz_ + xi * sqrt_step_sz_;
 }
 
 double VMC::loc_energy_no_int(Particle *particle){
     double r_sq = arma::dot(particle->pos_, particle->pos_);
-    return alpha_*dims_*n_particles_ + (0.5*omega_*omega_ - 2*alpha_*alpha_)*r_sq;
+    return alpha_ * dims_ * n_particles_ + (0.5 * omega_ * omega_ - 2 * alpha_ * alpha_) * r_sq;
 }
 
 double VMC::trial_fn_no_int(Particle *particle){
     double r_sq = arma::dot(particle->trial_pos_, particle->trial_pos_);
-    return exp(-2*alpha_*r_sq);
+    return exp(-2 * alpha_ * r_sq);
 }
 
 
 double VMC::greens_fn(arma::mat x, arma::mat y, arma::mat force_y){
     arma::mat diff = x - y - D_*force_y*step_sz_;
     double r = arma::dot(diff, diff);
-    return exp(-r/(4*D_*step_sz_));
+    return exp(-r / (4 * D_ * step_sz_));
 }
 
 void VMC::quantum_force_spherical(arma::mat *pos, arma::mat *force){
-    (*force) = -4*alpha_*(*pos);
+    (*force) = -4 * alpha_ * (*pos);
 }
 
 
@@ -100,8 +100,8 @@ void VMC::quantum_force_elliptical(arma::mat *pos, arma::mat *force){
                 arma::vec rj = (*pos).col(j);
                 arma::vec diff = ri - rj;
                 double r_ij = arma::norm(diff);
-                double dudr = a_/(r_ij*(r_ij - a_));
-                tmp += 2*diff*dudr/r_ij;
+                double dudr = a_ / (r_ij * (r_ij - a_));
+                tmp += 2 * diff * dudr / r_ij;
             }
         }
         (*force).col(i) += tmp;
@@ -167,6 +167,7 @@ double VMC::monte_carlo_sim(int mc_samples, int therm_samples){
             energy = (this->*loc_energy)(&particle); //Initial energy of the system
             double last_trial = (this->*trial_fn)(&particle);
 
+            //Burn-in period
             for (int n = 0; n < therm_samples; n++){
                 (this->*metropolis)(&particle, &last_trial, &energy);
             }
@@ -260,25 +261,30 @@ double VMC::trial_fn_with_int(Particle *particle){
             if (r_ij <= a_){
                 return 0.;
             }
-            jastrow *= 1-a_/r_ij;
+            jastrow *= 1 - a_ / r_ij;
         }
     }
     jastrow *= jastrow;
     arma::mat r_mat = particle->trial_pos_;
     r_mat.row(2) *= sqrt(beta_);
     double r = arma::dot(r_mat, r_mat);
-    return exp(-2*alpha_*r)*jastrow;
+    return exp(-2 * alpha_ * r) * jastrow;
 }
 
 
 double VMC::laplacian_with_int(Particle *particle){
     double laplacian = 0.;
-    laplacian += 2*alpha_*(2+beta_)*n_particles_;
+    laplacian += 2 * alpha_ * (2 + beta_) * n_particles_;
     for (int i = 0; i < n_particles_; i++){
         arma::vec ri = particle->pos_.col(i);
-        laplacian -= 4*alpha_*alpha_*(ri.at(0)*ri.at(0) + ri.at(1)*ri.at(1) + beta_*beta_*ri.at(2)*ri.at(2));
+        laplacian -= 4 * alpha_ * alpha_ 
+                * (
+                    ri.at(0) * ri.at(0) 
+                    + ri.at(1) * ri.at(1) 
+                    + beta_ * beta_ * ri.at(2) * ri.at(2)            
+        );
 
-        arma::vec grad_phi = -2*alpha_*ri;
+        arma::vec grad_phi = -2 * alpha_ * ri;
         grad_phi.at(2) *= beta_;
         arma::vec grad_u = arma::vec(3).fill(0.);
         for (int j = 0; j < n_particles_; j++){
@@ -304,7 +310,7 @@ double VMC::laplacian_with_int(Particle *particle){
 
 double VMC::loc_energy_with_int(Particle *particle){
     double energy = 0.;
-    energy += (this->*laplacian)(particle); //Add the contriution from the laplacian part of the local energy
+    energy += (this->*laplacian)(particle); //Add the contribution from the laplacian part of the local energy
 
     //Add the contribution from the potential part of the local energy
     arma::mat r_mat = particle->pos_;
@@ -350,7 +356,8 @@ void VMC::one_body_density(int mc_samples, int therm_samples, std::string filena
     {
         #pragma omp parallel private(r)
         {
-            arma::arma_rng::set_seed(omp_get_thread_num()+40);double mean_energy = monte_carlo_sim(mc_samples, therm_samples);
+            arma::arma_rng::set_seed(omp_get_thread_num()+40);
+            double mean_energy = monte_carlo_sim(mc_samples, therm_samples);
             Particle particle(n_particles_, dims_, sampling_);
             // energy = (this->*loc_energy)(&particle); //Initial energy of the system
             double last_trial = (this->*trial_fn)(&particle);

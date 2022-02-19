@@ -1,11 +1,10 @@
 #include "ising2d.hpp"
-
-#include <omp.h>
 #include <iostream>
+#include <omp.h>
 
 int main(int argc, char const *argv[]) {
-    int L = 150;
-    int mc_samples = 1e5;
+    int L = 40;
+    int mc_samples = 1e4;
     int therm_samples = 1e2;
     double T = 1.;
     std::string spin_config = "ordered";

@@ -1,10 +1,10 @@
 all: compile link run
 
 compile:
-	c++ -c $(wildcard *.cpp) -Ofast -std=c++11 -larmadillo -Xpreprocessor -fopenmp
+	g++-11 -c $(wildcard *.cpp) -O3 -std=c++11 -fopenmp
 
 link:
-	c++ -o main.out $(wildcard *.o) -Xpreprocessor -fopenmp -lomp -larmadillo
+	g++-11 -o main.out $(wildcard *.o) -fopenmp -larmadillo
 
 run:
 	./main.out

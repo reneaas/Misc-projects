@@ -97,8 +97,8 @@ def monte_carlo_sim(mc_cycles, L = 16, temp = 1.0):
 
 
 
-
-start = time()
-monte_carlo_sim(mc_cycles = 500)
-end = time()
-print("timeused = ", end-start, " seconds")
+if __name__ == "__main__":
+    start = time()
+    monte_carlo_sim(mc_cycles = 500)
+    end = time()
+    print("timeused = ", end-start, " seconds")

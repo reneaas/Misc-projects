@@ -22,15 +22,10 @@ private:
 
     //Sampling methods
     void metropolis(SpinSystem *system);
-    void wollf(SpinSystem *system);
 
-
-    //Various helper functions
-    void get_cluster(SpinSystem *system, int i, int j);
 
 public:
     Ising2D(int L, double T, std::string spin_config);
-    Ising2D(int L, double T, std::string spin_config, std::string sampling_method);
     arma::vec monte_carlo_sim(int mc_samples, int therm_samples);
 };
 

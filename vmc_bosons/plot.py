@@ -4,9 +4,9 @@ import numpy as np
 
 N = [1, 10, 50, 100]
 n = 50
-n_particles = 10
+n_particles = 50
 dims = 3
-sampling = "brute_force"
+sampling = "importance_sampling"
 alpha = []
 alpha_int = []
 E_int = []
@@ -24,7 +24,7 @@ for i in range(n):
 
 E = np.array(E)
 plt.plot(alpha, E/n_particles, label=f"interacting; n = {n_particles}")
-plt.fill_between(alpha, E - std, E + std, color="gray", alpha=0.2)
+#plt.fill_between(alpha, E - std, E + std, color="gray", alpha=0.2)
 # plt.scatter(alpha, E, label="datapoints", marker="*", color="r")
 plt.xlabel("alpha")
 plt.ylabel("Energy")

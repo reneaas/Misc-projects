@@ -47,7 +47,7 @@ void Diffusion2D::solve(double tot_time){
         while (t < tot_time){
             for (int j = 1; j < n_; j++){
                 for (int i = 1; i < n_; i++){
-                    v_new_(i, j) = advance(i, j);
+                    v_new_.at(i, j) = advance(i, j);
                 }
             }
             v_old_.swap(v_new_);

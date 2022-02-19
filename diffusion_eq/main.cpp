@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
 /*
 The chosen initial condition of the 2D-diffusion equation.
 This is chosen for simplicity since the initial condition
-conincides with a single term in the general Fourier series
+coincides with a single term in the general Fourier series
 of the analytical solution such that
 v(x,y,t) = f(x,y)*exp(-2*pi^2*t).
 */

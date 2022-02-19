@@ -40,7 +40,7 @@ void monte_carlo_metropolis(int mc_samples, double temp, int L)
         }
         else if ((rand() % max_int)*max_inv < boltzmann[dE + 8]){
             //accept spin flip
-            E += ()dE;
+            E += 1.*dE;
             spin_matrix[idx[x]*L + idx[y]] *= (-1);
             M += 2*spin_matrix[idx[x]*L + idx[y]];
         }
@@ -55,7 +55,7 @@ void monte_carlo_metropolis(int mc_samples, double temp, int L)
     double scaling = 1./(mc_samples*L*L);
     //E_mean *= (1./mc_samples);
     E_mean *= scaling;
-    EE_mean *= scaling ;
+    EE_mean *= scaling;
     M_mean *= scaling;
     MM_mean *= scaling;
 

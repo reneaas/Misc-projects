@@ -25,7 +25,7 @@ void SpinSystem::init_observables(){
             energy_ -= spin_mat(i, j)
                                 *(spin_mat(i, j+1)
                                 + spin_mat(i+1, j)
-                            );
+            );
 
             magnetization_ += spin_mat(i, j);
         }
@@ -45,10 +45,4 @@ Implements periodic boundary conditions
 */
 int SpinSystem::idx(int index){
     return (index + L_) % L_;
-}
-
-void SpinSystem::add_to_cluster(int i, int j, double acceptance_prob){
-    if (arma::randu() <= acceptance_prob){
-        cluster_.at(idx(i), idx(j)) = -1;
-    }
 }

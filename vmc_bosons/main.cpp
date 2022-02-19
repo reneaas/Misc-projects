@@ -10,24 +10,30 @@ void optimize(double alpha0, int max_iter, int n_particles);
 
 int main(int argc, char const *argv[]) {
     //int n_particles = std::atoi(argv[1]);
-    int n_particles = 10;
+    int n_particles = 50;
     int dims = 3;
-    double step_sz = 0.01;
-    double alpha = 0.2;
-    int mc_samples = pow(2,21);
-    int therm_samples = 1e3;
-    int n = 10;
+    double step_sz = 0.1;
+    double alpha = 0.5;
+    int mc_samples = pow(2,19);
+    int therm_samples = 10000;
+    int n = 50;
     int bootstrap_samples = 1e2;
     string filename;
     string sampling = "importance_sampling";
     double mean_energy, stddev;
     double beta = 2.82843;
     // double beta = 1;
-
-
+    VMC my_solver(n_particles, dims, step_sz, alpha, sampling);
     double start = omp_get_wtime();
+    double E = my_solver.monte_carlo_sim(mc_samples, therm_samples);
+    double end = omp_get_wtime();
+    double timeused = end - start;
+    std::cout << "timeused = " << timeused << " seconds " << std::endl;
+    // exit(1);
+
+    // double start = omp_get_wtime();
     for (int i = 0; i < n; i++){
-        alpha = 0.25 + 0.01*i;
+        alpha = 0.25 + 0.01 * i;
         cout << "alpha = " << alpha << endl;
         // filename = "results/non_interacting/mean_energy_"  + sampling + "_" + to_string(dims) + "_" + to_string(n_particles) + "_" + to_string(i) + ".txt";
         // VMC my_solver(n_particles, dims, step_sz, alpha, sampling);
@@ -36,11 +42,11 @@ int main(int argc, char const *argv[]) {
         my_solver.monte_carlo_sim(mc_samples, therm_samples);
         // my_solver.bootstrap(&mean_energy, &stddev, bootstrap_samples);
         // std::cout << "E = " << mean_energy << " ; " << "stddev = " << stddev << std::endl;
-        // my_solver.write_to_file(filename);
+        my_solver.write_to_file(filename);
     }
-    double end = omp_get_wtime();
-    double timeused = end-start;
-    cout << "timeused = " << timeused << endl;
+    // double end = omp_get_wtime();
+    // double timeused = end-start;
+    // cout << "timeused = " << timeused << endl;
 
 
     // alpha = 0.5;
@@ -76,6 +82,14 @@ void optimize(double alpha0, int max_iter, int n_particles){
     double alpha = alpha0;
     double dalpha = 0.01;
     double eta = 0.001;
+
+    VMC my_solver(n_particles, dims, step_sz, alpha, sampling);
+
+    double start = omp_get_wtime();
+    double E = my_solver.monte_carlo_sim(mc_samples, therm_samples);
+    double end = omp_get_wtime();
+    double timeused = end - start;
+    std::cout << "timeused = " << timeused << " seconds " << std::endl;
 
     while (iter < max_iter){
         std::cout << "alpha = " << alpha << std::endl;
