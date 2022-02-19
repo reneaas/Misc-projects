@@ -2,13 +2,17 @@ from py_solar_system import PySolarSystem
 import numpy as np
 from tqdm import trange
 import matplotlib.pyplot as plt
+import pyarma as pa
+import sys
 
 
 def main():
-    num_particles = 3
-    r0 = np.random.normal(size=(num_particles, 3))
-    v0 = np.random.normal(size=(num_particles, 3))
-    m = np.random.uniform(size=num_particles)
+
+    r0 = np.load("../data/init_pos.npy")
+    v0 = np.load("../data/init_vel.npy")
+    m = np.load("../data/mass.npy")
+
+    num_particles = r0.shape[0]
 
     system = PySolarSystem(r0=r0, v0=v0, m=m)
     pos = system.get_position()
@@ -32,7 +36,7 @@ def main():
     print(f"{pos=}")
     print(f"{vel=}")
 
-    num_iter = 100000
+    num_iter = 1000000
     r = np.zeros(shape=(num_iter, num_particles, 3))
     v = np.zeros(shape=(num_iter, num_particles, 3))
     for i in trange(num_iter):
@@ -43,7 +47,8 @@ def main():
         r[i, ...] = new_pos
         v[i, ...] = new_vel
     
-    plt.plot(r[:, 0, 0], r[:, 0, 1])
+    for i in range(num_particles):
+        plt.plot(r[:, i, 0], r[:, i, 1])
     plt.show()
 
 
