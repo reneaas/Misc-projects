@@ -6,13 +6,13 @@ import numpy
 
 ext_modules = [
     Extension(
-        "solar_system",
+        "py_solar_system",
         sources=["py_solar_system.pyx"],
-        extra_compile_args=["-Ofast"],
-        include_dirs=[numpy.get_include()]
+        extra_compile_args=["-Ofast", "-mtune=native", "-std=c++11"],
+        language="c++",
     )
 ]
 
-setup(name="SolarSystem",
+setup(name="PySolarSystem",
     ext_modules=cythonize(ext_modules)
 )
