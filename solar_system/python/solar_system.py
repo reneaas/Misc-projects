@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import trange
 
 
 class SolarSystem(object):
@@ -11,7 +12,7 @@ class SolarSystem(object):
     dims: (int) number of physical dimensions.
     """
 
-    def __init__(self, mass, init_vel, init_pos, timesteps, dt = 0.0001, dims  = 3):
+    def __init__(self, mass, init_vel, init_pos, timesteps, dt=0.0001, dims=3):
         super(SolarSystem, self).__init__()
 
         self.num_objects = len(mass)
@@ -29,7 +30,7 @@ class SolarSystem(object):
         self.pos[0, :] = init_pos[:]
         self.vel[0, :] = init_vel[:]
 
-        self.G = 4*pi**2
+        self.G = 4 * np.pi ** 2
 
     def compute_acc(self, t):
         self.acc, self.acc_old = self.acc_old, self.acc
@@ -67,5 +68,8 @@ def run_simulation(timesteps = int(1e6)):
     system = SolarSystem(mass, init_vel, init_pos, timesteps)
     solver = EulerCromer(dt = system.dt)
 
-    for i in range(timesteps):
+    for i in trange(timesteps):
         system.vel[i+1] = solver.forward()
+
+if __name__ == "__main__":
+    run_simulation()

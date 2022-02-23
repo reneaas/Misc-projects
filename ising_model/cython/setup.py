@@ -6,13 +6,13 @@ import numpy
 
 ext_modules = [
     Extension(
-        "solar_system",
-        sources=["py_solar_system.pyx"],
-        extra_compile_args=["-Ofast"],
+        "ising2d",
+        sources=["ising.pyx"],
+        extra_compile_args=["-O3"],
         include_dirs=[numpy.get_include()]
     )
 ]
 
-setup(name="SolarSystem",
+setup(name="Ising2D",
     ext_modules=cythonize(ext_modules)
 )

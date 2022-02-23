@@ -10,8 +10,7 @@ SolarSystem::SolarSystem(
     r_ = r0;
     v_ = v0;
     m_ = m;
-
-    G_ = 4 * pi * pi;
+    G_ = 4 * PI * PI;
 }
 
 std::vector< std::vector<double> > SolarSystem::get_position() {
@@ -68,4 +67,17 @@ std::vector< std::vector<double> > SolarSystem::get_force() {
         force.push_back(tmp);
     }
     return force;
+}
+
+std::vector< std::vector< std::vector<double> > > SolarSystem::compute_evolution(int num_timesteps, double dt) {
+    std::vector< std::vector< std::vector<double> > > R;
+    R.resize(num_timesteps);
+
+    for (int i = 0; i < num_timesteps; i++) {
+        std::vector< std::vector<double> > force = get_force();
+        step(force, dt);
+        R[i] = r_;
+        // R.push_back(r_);
+    }
+    return R;
 }

@@ -1,16 +1,16 @@
 #ifndef SOLAR_SYSTEM_HPP
 #define SOLAR_SYSTEM_HPP
 
-#define pi 3.14159265359
+#define PI 3.14159265359
 
 #include <vector>
+#include <cmath>
 
 class SolarSystem {
 private:
     /* data */
     std::vector< std::vector<double> > r_, v_; //Position and velocity.
     std::vector<double> m_; // Mass
-
     double G_;
 
 
@@ -25,6 +25,7 @@ public:
 
     std::vector< std::vector<double> > get_force();
     void step(std::vector< std::vector<double> > force, double dt);
+    std::vector< std::vector< std::vector<double> > > compute_evolution(int num_timesteps, double dt);
 
     std::vector< std::vector<double> > get_position();
     std::vector< std::vector<double> > get_velocity();

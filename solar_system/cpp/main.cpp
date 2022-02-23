@@ -17,8 +17,8 @@ int main(int argc, char const *argv[]) {
 
 
     int n = mass.n_elem; //number of celestial bodies.
-    int timesteps = 1e5;
-    double step_sz = 0.01;
+    int timesteps = 1e7;
+    double step_sz = 0.001;
     std::string outfilename = "results/full_system.txt";
     SolarSystem my_solver(n, timesteps,step_sz);
     my_solver.init_data(init_pos, init_vel, mass);
