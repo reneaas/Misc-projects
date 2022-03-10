@@ -24,7 +24,7 @@ Args:
     std::vector<double> r:
         Should be a position vector of size 3.
     int num_results:
-        Number of results to use to
+        Number of results used to compute the integral.
 */
 std::vector<double> c_get_B_field(std::vector<double> r, int num_results) {
 
