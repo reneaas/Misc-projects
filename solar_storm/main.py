@@ -27,7 +27,7 @@ def compute_evolution(r0, v0, num_iter, dt=0.001, mass=1.):
 
     Args:
         r0 (np.ndarray or list):
-            Initial position. Must be a length 3.
+            Initial position. Must be of length 3.
         v0 (np.ndarray or list):
             Initial velocity. Must be of length 3.
         num_iter (int):

@@ -7,24 +7,31 @@
 using namespace std;
 
 //Globally set parameters.
-double mu0 = 4 * M_PI * 1e-7;
-double sigma = 1;
-double omega = 1;
-double a = 1;
+double mu0 = 4 * M_PI * 1e-7; //Permeability of free space
+
+// All physical parameters set to 1 just for convenience,
+// but values should really be scaled properly to be sensible physically.
+double sigma = 1; // Surface charge density
+double omega = 1; // Angular velocity of earth
+double a = 1; //Radius of earth
 
 
 /* 
 Computes the Magnetic field of a simple spherical model of Earth
 using Monte Carlo integration sampled from a uniform distribution
 for each integration variable.
-The physical model is assuming a uniformly distributed electric charge
-on a sphere rotating with a constant angular velocity.
+The physical model is assuming a uniformly distributed electric charge `sigma`
+on a sphere rotating with a constant angular velocity `omega`.
 
 Args:
     std::vector<double> r:
         Should be a position vector of size 3.
     int num_results:
         Number of results used to compute the integral.
+
+Returns:
+    std::vector<double> B_field:
+        Magnetic field in the input position r.
 */
 std::vector<double> c_get_B_field(std::vector<double> r, int num_results) {
 
