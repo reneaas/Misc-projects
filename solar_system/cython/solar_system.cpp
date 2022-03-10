@@ -47,8 +47,7 @@ void SolarSystem::step(std::vector<double> force, double dt) {
 
 std::vector<double> SolarSystem::get_force() {
     for (int i = 0; i < num_objects_; i++) {
-        std::vector<double> tmp; 
-        tmp.resize(3);
+        std::vector<double> tmp = {0., 0., 0.}; 
         for (int j = 0; j < num_objects_; j++) {
             if (i != j) {
                 double x_diff = r_[i * dims_ + 0] - r_[j * dims_ + 0];
