@@ -948,12 +948,12 @@ struct __pyx_obj_15py_solar_system_PySolarSystem;
  * from py_solar_system cimport SolarSystem
  * 
  * cdef class PySolarSystem:             # <<<<<<<<<<<<<<
- *     cdef SolarSystem solar_system #Holds the C++ object.
+ *     cdef SolarSystem c_solar_system #Holds the C++ object.
  * 
  */
 struct __pyx_obj_15py_solar_system_PySolarSystem {
   PyObject_HEAD
-  SolarSystem solar_system;
+  SolarSystem c_solar_system;
 };
 
 
@@ -1337,10 +1337,10 @@ static PyObject *__pyx_tuple__2;
 /* Late includes */
 
 /* "py_solar_system.pyx":7
- *     cdef SolarSystem solar_system #Holds the C++ object.
+ *     cdef SolarSystem c_solar_system #Holds the C++ object.
  * 
  *     def __cinit__(self, vector[double] r0, vector[double] v0, vector[double] m):             # <<<<<<<<<<<<<<
- *         self.solar_system = SolarSystem(r0, v0, m)
+ *         self.c_solar_system = SolarSystem(r0, v0, m)
  * 
  */
 
@@ -1431,7 +1431,7 @@ static int __pyx_pf_15py_solar_system_13PySolarSystem___cinit__(struct __pyx_obj
   /* "py_solar_system.pyx":8
  * 
  *     def __cinit__(self, vector[double] r0, vector[double] v0, vector[double] m):
- *         self.solar_system = SolarSystem(r0, v0, m)             # <<<<<<<<<<<<<<
+ *         self.c_solar_system = SolarSystem(r0, v0, m)             # <<<<<<<<<<<<<<
  * 
  *     def get_position(self):
  */
@@ -1441,13 +1441,13 @@ static int __pyx_pf_15py_solar_system_13PySolarSystem___cinit__(struct __pyx_obj
     __Pyx_CppExn2PyErr();
     __PYX_ERR(1, 8, __pyx_L1_error)
   }
-  __pyx_v_self->solar_system = __pyx_t_1;
+  __pyx_v_self->c_solar_system = __pyx_t_1;
 
   /* "py_solar_system.pyx":7
- *     cdef SolarSystem solar_system #Holds the C++ object.
+ *     cdef SolarSystem c_solar_system #Holds the C++ object.
  * 
  *     def __cinit__(self, vector[double] r0, vector[double] v0, vector[double] m):             # <<<<<<<<<<<<<<
- *         self.solar_system = SolarSystem(r0, v0, m)
+ *         self.c_solar_system = SolarSystem(r0, v0, m)
  * 
  */
 
@@ -1463,11 +1463,11 @@ static int __pyx_pf_15py_solar_system_13PySolarSystem___cinit__(struct __pyx_obj
 }
 
 /* "py_solar_system.pyx":10
- *         self.solar_system = SolarSystem(r0, v0, m)
+ *         self.c_solar_system = SolarSystem(r0, v0, m)
  * 
  *     def get_position(self):             # <<<<<<<<<<<<<<
  *         """Returns the current positions of the objects in the solar system."""
- *         return self.solar_system.get_position()
+ *         return self.c_solar_system.get_position()
  */
 
 /* Python wrapper */
@@ -1496,23 +1496,23 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_2get_position(struct
   /* "py_solar_system.pyx":12
  *     def get_position(self):
  *         """Returns the current positions of the objects in the solar system."""
- *         return self.solar_system.get_position()             # <<<<<<<<<<<<<<
+ *         return self.c_solar_system.get_position()             # <<<<<<<<<<<<<<
  * 
  *     def get_velocity(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->solar_system.get_position()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->c_solar_system.get_position()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "py_solar_system.pyx":10
- *         self.solar_system = SolarSystem(r0, v0, m)
+ *         self.c_solar_system = SolarSystem(r0, v0, m)
  * 
  *     def get_position(self):             # <<<<<<<<<<<<<<
  *         """Returns the current positions of the objects in the solar system."""
- *         return self.solar_system.get_position()
+ *         return self.c_solar_system.get_position()
  */
 
   /* function exit code */
@@ -1527,11 +1527,11 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_2get_position(struct
 }
 
 /* "py_solar_system.pyx":14
- *         return self.solar_system.get_position()
+ *         return self.c_solar_system.get_position()
  * 
  *     def get_velocity(self):             # <<<<<<<<<<<<<<
  *         """Returns the current velocities of the objects in the solar system."""
- *         return self.solar_system.get_velocity()
+ *         return self.c_solar_system.get_velocity()
  */
 
 /* Python wrapper */
@@ -1560,23 +1560,23 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_4get_velocity(struct
   /* "py_solar_system.pyx":16
  *     def get_velocity(self):
  *         """Returns the current velocities of the objects in the solar system."""
- *         return self.solar_system.get_velocity()             # <<<<<<<<<<<<<<
+ *         return self.c_solar_system.get_velocity()             # <<<<<<<<<<<<<<
  * 
  *     def get_force(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->solar_system.get_velocity()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->c_solar_system.get_velocity()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "py_solar_system.pyx":14
- *         return self.solar_system.get_position()
+ *         return self.c_solar_system.get_position()
  * 
  *     def get_velocity(self):             # <<<<<<<<<<<<<<
  *         """Returns the current velocities of the objects in the solar system."""
- *         return self.solar_system.get_velocity()
+ *         return self.c_solar_system.get_velocity()
  */
 
   /* function exit code */
@@ -1591,11 +1591,11 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_4get_velocity(struct
 }
 
 /* "py_solar_system.pyx":18
- *         return self.solar_system.get_velocity()
+ *         return self.c_solar_system.get_velocity()
  * 
  *     def get_force(self):             # <<<<<<<<<<<<<<
  *         """Returns the current force on each object in the solar system."""
- *         return self.solar_system.get_force()
+ *         return self.c_solar_system.get_force()
  */
 
 /* Python wrapper */
@@ -1624,23 +1624,23 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_6get_force(struct __
   /* "py_solar_system.pyx":20
  *     def get_force(self):
  *         """Returns the current force on each object in the solar system."""
- *         return self.solar_system.get_force()             # <<<<<<<<<<<<<<
+ *         return self.c_solar_system.get_force()             # <<<<<<<<<<<<<<
  * 
  *     def step(self, vector[double] force, double dt):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->solar_system.get_force()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 20, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->c_solar_system.get_force()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "py_solar_system.pyx":18
- *         return self.solar_system.get_velocity()
+ *         return self.c_solar_system.get_velocity()
  * 
  *     def get_force(self):             # <<<<<<<<<<<<<<
  *         """Returns the current force on each object in the solar system."""
- *         return self.solar_system.get_force()
+ *         return self.c_solar_system.get_force()
  */
 
   /* function exit code */
@@ -1655,7 +1655,7 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_6get_force(struct __
 }
 
 /* "py_solar_system.pyx":22
- *         return self.solar_system.get_force()
+ *         return self.c_solar_system.get_force()
  * 
  *     def step(self, vector[double] force, double dt):             # <<<<<<<<<<<<<<
  *         """Computes one step using Euler-Cromer.
@@ -1735,14 +1735,14 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_8step(struct __pyx_o
   /* "py_solar_system.pyx":31
  *                 Step size to use with the integrator.
  *         """
- *         self.solar_system.step(force, dt)             # <<<<<<<<<<<<<<
+ *         self.c_solar_system.step(force, dt)             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_v_self->solar_system.step(__pyx_v_force, __pyx_v_dt);
+  __pyx_v_self->c_solar_system.step(__pyx_v_force, __pyx_v_dt);
 
   /* "py_solar_system.pyx":22
- *         return self.solar_system.get_force()
+ *         return self.c_solar_system.get_force()
  * 
  *     def step(self, vector[double] force, double dt):             # <<<<<<<<<<<<<<
  *         """Computes one step using Euler-Cromer.
@@ -1760,7 +1760,7 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_8step(struct __pyx_o
  * 
  *     @property
  *     def num_objects(self):             # <<<<<<<<<<<<<<
- *         return self.solar_system.get_num_objects()
+ *         return self.c_solar_system.get_num_objects()
  * 
  */
 
@@ -1789,12 +1789,12 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_11num_objects___get_
   /* "py_solar_system.pyx":35
  *     @property
  *     def num_objects(self):
- *         return self.solar_system.get_num_objects()             # <<<<<<<<<<<<<<
+ *         return self.c_solar_system.get_num_objects()             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->solar_system.get_num_objects()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 35, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->c_solar_system.get_num_objects()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 35, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1804,7 +1804,7 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_11num_objects___get_
  * 
  *     @property
  *     def num_objects(self):             # <<<<<<<<<<<<<<
- *         return self.solar_system.get_num_objects()
+ *         return self.c_solar_system.get_num_objects()
  * 
  */
 
@@ -1823,7 +1823,7 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_11num_objects___get_
  * 
  *     @property
  *     def m(self):             # <<<<<<<<<<<<<<
- *         return self.solar_system.get_mass()
+ *         return self.c_solar_system.get_mass()
  */
 
 /* Python wrapper */
@@ -1851,10 +1851,10 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_1m___get__(struct __
   /* "py_solar_system.pyx":39
  *     @property
  *     def m(self):
- *         return self.solar_system.get_mass()             # <<<<<<<<<<<<<<
+ *         return self.c_solar_system.get_mass()             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->solar_system.get_mass()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_to_py_double(__pyx_v_self->c_solar_system.get_mass()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1864,7 +1864,7 @@ static PyObject *__pyx_pf_15py_solar_system_13PySolarSystem_1m___get__(struct __
  * 
  *     @property
  *     def m(self):             # <<<<<<<<<<<<<<
- *         return self.solar_system.get_mass()
+ *         return self.c_solar_system.get_mass()
  */
 
   /* function exit code */
@@ -2188,7 +2188,7 @@ static PyObject *__pyx_tp_new_15py_solar_system_PySolarSystem(PyTypeObject *t, P
   }
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_15py_solar_system_PySolarSystem *)o);
-  new((void*)&(p->solar_system)) SolarSystem();
+  new((void*)&(p->c_solar_system)) SolarSystem();
   if (unlikely(__pyx_pw_15py_solar_system_13PySolarSystem_1__cinit__(o, a, k) < 0)) goto bad;
   return o;
   bad:
@@ -2203,7 +2203,7 @@ static void __pyx_tp_dealloc_15py_solar_system_PySolarSystem(PyObject *o) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
   }
   #endif
-  __Pyx_call_destructor(p->solar_system);
+  __Pyx_call_destructor(p->c_solar_system);
   (*Py_TYPE(o)->tp_free)(o);
 }
 

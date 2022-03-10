@@ -17,14 +17,14 @@ int main(int argc, char const *argv[]) {
 
 
     int n = mass.n_elem; //number of celestial bodies.
-    int timesteps = 1e7;
+    int timesteps = 1e6;
     double step_sz = 0.001;
     std::string outfilename = "results/full_system.txt";
     SolarSystem my_solver(n, timesteps,step_sz);
     my_solver.init_data(init_pos, init_vel, mass);
     // SolarSystem my_solver(timesteps, step_sz);
     clock_t start = clock();
-    my_solver.verlet();
+    my_solver.euler_cromer();
     clock_t end = clock();
     double timeused = (double) (end-start)/CLOCKS_PER_SEC;
     std::cout << "timeused = " << timeused << " seconds " << std::endl;
