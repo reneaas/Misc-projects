@@ -3,8 +3,6 @@ import numpy as np
 from tqdm import trange
 import matplotlib.pyplot as plt
 
-m = 1
-
 def get_Lorentz_force(v, B, q=1e6):
     """Computes the Lorentz force of on the particle given a
     velocity and magnetic field.
