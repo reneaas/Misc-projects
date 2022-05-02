@@ -3,7 +3,7 @@ import numpy as np
 from tqdm import trange
 import matplotlib.pyplot as plt
 
-def get_Lorentz_force(v, B, q=1e6):
+def get_Lorentz_force(v, B, q=1e9):
     """Computes the Lorentz force of on the particle given a
     velocity and magnetic field.
 
@@ -48,7 +48,7 @@ def compute_evolution(r0, v0, num_iter, dt=0.001, mass=1.):
     r[0, ...] = r0
     v[0, ...] = v0
     for i in trange(num_iter-1, desc="Computing trajectories"):
-        B = get_B_field(r[i], num_results=int(1e6))
+        B = get_B_field(r[i], num_results=int(1e5))
         F = get_Lorentz_force(v=v[i], B=B)
         v[i+1] = v[i] + dt * F / mass
         r[i+1] = r[i] + dt * v[i+1]
@@ -60,7 +60,6 @@ def plot_b_field():
     num_points = 101
     y = np.linspace(-2, 2, num_points)
     z = np.copy(y)
-    # B_field = np.zeros(shape=(x.shape[0], z.shape[0]))
     B_y = np.zeros(shape=[num_points, num_points])
     B_z = np.zeros_like(B_y)
     for i in trange(num_points):
@@ -83,13 +82,13 @@ def plot_b_field():
 
 def main():
     r0 = np.random.normal(size=3)
-    r0 = np.array([4., 0., 0])
-    v0 = np.array([-0.05, 0.0, 0.01]) #Along x-axis slight perturbed in z direction.
-    num_results = int(1e7)
+    r0 = np.array([2., 0., 0])
+    v0 = np.array([-1, 0.0, 1.0]) #Along x-axis slight perturbed in z direction.
+    num_results = int(1e5)
 
-    # Compute time evoliution
-    num_iter = 10000
-    r, v = compute_evolution(r0=r0, v0=v0, num_iter=num_iter, dt=0.01)
+    # Compute time evolution
+    num_iter = 1000
+    r, v = compute_evolution(r0=r0, v0=v0, num_iter=num_iter, dt=0.001)
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')

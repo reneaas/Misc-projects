@@ -32,6 +32,9 @@ int SolarSystem::get_num_objects() {
     return num_objects_;
 }
 
+/* 
+Uses Euler-Cromer to perform one integration step in time.
+*/
 void SolarSystem::step(std::vector<double> force, double dt) {
 
     for (int i = 0; i < num_objects_; i++) {

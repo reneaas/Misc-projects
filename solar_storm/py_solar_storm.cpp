@@ -1209,9 +1209,9 @@ static PyObject *__pyx_tuple_;
 static PyObject *__pyx_codeobj__2;
 /* Late includes */
 
-/* "py_solar_storm.pyx":10
- *     cdef vector[double] c_get_B_field(vector[double] r, int num_results)
+/* "py_solar_storm.pyx":15
  * 
+ * # Python wrapper around the C/C++ function.
  * def get_B_field(r, num_results):             # <<<<<<<<<<<<<<
  *     return c_get_B_field(r, num_results)
  */
@@ -1251,11 +1251,11 @@ static PyObject *__pyx_pw_14py_solar_storm_1get_B_field(PyObject *__pyx_self, Py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_results)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("get_B_field", 1, 2, 2, 1); __PYX_ERR(0, 10, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_B_field", 1, 2, 2, 1); __PYX_ERR(0, 15, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_B_field") < 0)) __PYX_ERR(0, 10, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "get_B_field") < 0)) __PYX_ERR(0, 15, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1268,7 +1268,7 @@ static PyObject *__pyx_pw_14py_solar_storm_1get_B_field(PyObject *__pyx_self, Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_B_field", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 10, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_B_field", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 15, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("py_solar_storm.get_B_field", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1292,23 +1292,23 @@ static PyObject *__pyx_pf_14py_solar_storm_get_B_field(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_B_field", 0);
 
-  /* "py_solar_storm.pyx":11
- * 
+  /* "py_solar_storm.pyx":16
+ * # Python wrapper around the C/C++ function.
  * def get_B_field(r, num_results):
  *     return c_get_B_field(r, num_results)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_from_py_double(__pyx_v_r); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_results); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 11, __pyx_L1_error)
-  __pyx_t_3 = __pyx_convert_vector_to_py_double(c_get_B_field(__pyx_t_1, __pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_double(__pyx_v_r); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_num_results); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_3 = __pyx_convert_vector_to_py_double(c_get_B_field(__pyx_t_1, __pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "py_solar_storm.pyx":10
- *     cdef vector[double] c_get_B_field(vector[double] r, int num_results)
+  /* "py_solar_storm.pyx":15
  * 
+ * # Python wrapper around the C/C++ function.
  * def get_B_field(r, num_results):             # <<<<<<<<<<<<<<
  *     return c_get_B_field(r, num_results)
  */
@@ -1580,16 +1580,16 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "py_solar_storm.pyx":10
- *     cdef vector[double] c_get_B_field(vector[double] r, int num_results)
+  /* "py_solar_storm.pyx":15
  * 
+ * # Python wrapper around the C/C++ function.
  * def get_B_field(r, num_results):             # <<<<<<<<<<<<<<
  *     return c_get_B_field(r, num_results)
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_r, __pyx_n_s_num_results); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_r, __pyx_n_s_num_results); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_py_solar_storm_pyx, __pyx_n_s_get_B_field, 10, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_py_solar_storm_pyx, __pyx_n_s_get_B_field, 15, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1868,21 +1868,21 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "py_solar_storm.pyx":10
- *     cdef vector[double] c_get_B_field(vector[double] r, int num_results)
+  /* "py_solar_storm.pyx":15
  * 
+ * # Python wrapper around the C/C++ function.
  * def get_B_field(r, num_results):             # <<<<<<<<<<<<<<
  *     return c_get_B_field(r, num_results)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_14py_solar_storm_1get_B_field, NULL, __pyx_n_s_py_solar_storm); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_14py_solar_storm_1get_B_field, NULL, __pyx_n_s_py_solar_storm); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_B_field, __pyx_t_1) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_B_field, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "py_solar_storm.pyx":1
- * from libcpp.vector cimport vector             # <<<<<<<<<<<<<<
+ * from libcpp.vector cimport vector # Necessary to use std::vector as inputs and outputs of C++ function.             # <<<<<<<<<<<<<<
  * 
- * 
+ * # Make the .cpp file source code visible to Cython.
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);

@@ -76,5 +76,6 @@ std::vector<double> run_chain (int num_burnin_steps, int num_results) {
     energies.resize(num_results)
     for (int i = 0; i < num_results; i++) {
         metropolis();
+        
     }
 }

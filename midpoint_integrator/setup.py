@@ -5,7 +5,7 @@ ext_modules = [
     Extension(
         "integrator",
         sources=["integrator.pyx"],
-        extra_compile_args=["-Xpreprocessor" ,"-fopenmp", "-O3"],
+        extra_compile_args=["-Xpreprocessor" ,"-fopenmp", "-Ofast"],
         extra_link_args=["-lomp"]
     )
 ]
