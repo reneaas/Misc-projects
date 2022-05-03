@@ -41,14 +41,14 @@ def get_rk4_integrator(h, f):
     def rk4_integrator(t, *r):
         k0 = f(t, *r)
 
-        fn_args = [x + 0.5 * k * h for x, k in zip(r, k0)]
-        k1 = f(t, *fn_args)
+        args = [x + 0.5 * k * h for x, k in zip(r, k0)]
+        k1 = f(t, *args)
 
-        fn_args = [x + 0.5 * k * h for x, k in zip(r, k1)]
-        k2 = f(t, *fn_args)
+        args = [x + 0.5 * k * h for x, k in zip(r, k1)]
+        k2 = f(t, *args)
 
-        fn_args = [x + k * h for x, k in zip(r, k2)]
-        k3 = f(t, *fn_args)
+        args = [x + k * h for x, k in zip(r, k2)]
+        k3 = f(t, *args)
         
         r_next = [
             x + (h / 6) * (i + 2 * j + 2 * k + l) for x, i, j, k, l in zip(r, k0, k1, k2, k3)
@@ -97,7 +97,7 @@ def plot_b_field():
 def main():
     r0 = np.random.normal(size=3)
     r0 = np.array([2., 0., 0])
-    v0 = np.array([-4, 0.0, 1]) #Along x-axis slight perturbed in z direction.
+    v0 = np.array([-1, 0.0, 4]) #Along x-axis slight perturbed in z direction.
     num_results = int(1e6)
 
     # Compute time evolution
@@ -130,7 +130,8 @@ def main():
     ax.plot(xs=r[:, 0], ys=r[:, 1], zs=r[:, 2], color="red")
     ax.plot_surface(x, y, z, alpha=0.5)
     # plt.axis("equal")
-    plt.savefig("particles_trapped_van_allen_belt.pdf")
+    # plt.savefig("van_allen_belt_2.pdf")
+    plt.show()
 
 if __name__ == "__main__":
     main()
