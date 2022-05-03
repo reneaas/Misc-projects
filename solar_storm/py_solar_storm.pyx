@@ -11,6 +11,6 @@ cdef extern from "solar_storm.cpp":
 cdef extern from "solar_storm.hpp":
     cdef vector[double] c_get_B_field(vector[double] r, int num_results)
 
-# Python wrapper around the C/C++ function.
+# Python wrapper around the C++ function.
 def get_B_field(r, num_results):
     return c_get_B_field(r, num_results)

@@ -10,7 +10,6 @@ import time
 
 
 def main():
-
     r0 = np.load("../data/init_pos.npy")
     v0 = np.load("../data/init_vel.npy")
     m = np.load("../data/mass.npy")
@@ -20,8 +19,8 @@ def main():
     v0 = v0.ravel()
 
     solar_system = PySolarSystem(r0=r0, v0=v0, m=m)
-    num_iter = int(1e6)
-    dt = 0.001
+    num_iter = int(1e7)
+    dt = 0.0001
     r = np.zeros(shape=(num_iter, num_particles * 3))
     start = time.perf_counter()
     for i in trange(num_iter, desc="Calculating orbits"):
@@ -38,6 +37,8 @@ def main():
     #Projection in xy-plane
     for i in range(num_particles):
         plt.plot(r[:, i, 0], r[:, i, 1])
+    plt.xlabel("x [AU]")
+    plt.ylabel("y [AU]")
     plt.show()
 
     #Full 3D plot of trajectories
@@ -45,26 +46,9 @@ def main():
     ax = fig.add_subplot(111, projection='3d')
     for i in range(num_particles):
         ax.plot(xs=r[:, i, 0], ys=r[:, i, 1], zs=r[:, i, 2])
+    plt.xlabel("x [AU]")
+    plt.ylabel("y [AU]")
     plt.show()
-
-    km_per_AU = 150e6
-
-    r_earth = r[:, 3, ...] #i = 3 is earth
-    r_mars = r[:, 4, ...] #i = 4 is mars
-    print(r_earth.shape)
-    distance = np.linalg.norm(r_earth - r_mars, axis=1)
-    print(f"{distance.shape=}")
-    mean_distance = np.mean(distance)
-    print(f"{mean_distance=} AU")
-    mean_distance = mean_distance * km_per_AU
-    print(f"{mean_distance=} km")
-    print(f"Time for light to travel from mars to earth = {mean_distance / (3e5) / 60} minutes")
-
-
-    min_distance = np.min(distance, axis=0) * km_per_AU / 1e6
-    max_distance = np.max(distance, axis=0) * km_per_AU / 1e6
-    print(f"{min_distance=} million km")
-    print(f"{max_distance=} million km")
     
 
 

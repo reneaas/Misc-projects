@@ -10,9 +10,8 @@
         "extra_compile_args": [
             "-Xpreprocessor",
             "-fopenmp",
-            "-O3",
-            "-std=c++11",
-            "-mtune=native"
+            "-Ofast",
+            "-std=c++11"
         ],
         "extra_link_args": [
             "-lomp"
@@ -38,7 +37,7 @@ END: Cython Metadata */
 #else
 #define CYTHON_ABI "0_29_28"
 #define CYTHON_HEX_VERSION 0x001D1CF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
