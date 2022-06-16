@@ -1,75 +1,75 @@
-import numpy as np
+from grpc import access_token_call_credentials
+import numpy as np 
 from tqdm import trange
-
+import matplotlib.pyplot as plt 
 
 class SolarSystem(object):
-    """
-    mass: shape [num_objects]
-    init_vel: shape [num_objects, dims]
-    init_pos: shape [num_objects, dims]
-    timesteps: (int) number of timesteps
-    dt: (double) steplength
-    dims: (int) number of physical dimensions.
-    """
-
-    def __init__(self, mass, init_vel, init_pos, timesteps, dt=0.0001, dims=3):
-        super(SolarSystem, self).__init__()
-
-        self.num_objects = len(mass)
-        self.mass = mass
-        self.timesteps = timesteps
-        self.dims = dims #Defaults to 3D simulation.
-
-        self.pos = np.zeros([self.timesteps, self.num_objects, self.dims])
-        self.vel = np.zeros_like(self.pos)
-        self.time = np.zeros(timesteps)
-
-        self.acc = np.zeros([self.num_objects, self.dims])
-        self.acc_old = np.zeros_like(self.acc)
-
-        self.pos[0, :] = init_pos[:]
-        self.vel[0, :] = init_vel[:]
+    def __init__(self, m, r, v):
+        self.m = m # Initialize mass
+        self.v = v # initialize velocities
+        self.r = r # initialize positions
 
         self.G = 4 * np.pi ** 2
 
-    def compute_acc(self, t):
-        self.acc, self.acc_old = self.acc_old, self.acc
-        self.acc[:] = 0.
-        for i in range(self.num_objects):
-            for j in range(self.num_objects):
-                if i != j:
-                    diff = self.pos[t, i] - self.pos[t, j]
-                    self.acc[i, :] += diff/np.linalg.norm(diff)**3
-        self.acc *= self.G
+    def get_force(self, i):
+        force = 0
+        for j in range(self.r.shape[0]):
+            if i != j:
+                dr = self.r[i] - self.r[j]
+                force -= self.m[j] * dr / np.linalg.norm(dr) ** 3
+        force *= self.m[i] * self.G
+        return force
+
+    def get_all_forces(self):
+        forces = np.zeros(shape=self.r.shape)
+        for i in range(self.r.shape[0]):
+            forces[i, ...] = self.get_force(i) / self.m[i]
+        return forces
 
 
-class EulerCromer(object):
-
-    def __init__(self, dt):
-        self.dt = dt
-
-        return None
-
-    def forward(self, vel, pos, acc):
-        vel = vel + acc*self.dt
-        pos = pos + vel*self.dt
-        return vel, pos
+    def __str__(self):
+        return str(self.r)
 
 
-def compute_acc():
-    return None
+def get_euler_cromer_integrator(h, acceleration_fn):
+    def euler_cromer_integrator(solar_system):
+        a = acceleration_fn(solar_system)
+        solar_system.v += a * h
+        solar_system.r += solar_system.v * h
+        return solar_system
+    return euler_cromer_integrator
 
 
-def run_simulation(timesteps = int(1e6)):
-    mass = np.load("data/mass.npy")
-    init_vel = np.load("data/vel.npy")
-    init_pos = np.load("data/pos.npy")
+def main():
+    r0 = np.load("../data/init_pos.npy")
+    v0 = np.load("../data/init_vel.npy")
+    m = np.load("../data/mass.npy")
 
-    system = SolarSystem(mass, init_vel, init_pos, timesteps)
-    solver = EulerCromer(dt = system.dt)
 
-    for i in trange(timesteps):
-        system.vel[i+1] = solver.forward()
+    solar_system = SolarSystem(m, r=r0, v=v0)
+    print(solar_system)
+
+    h = 1e-2
+    acceleration_fn = lambda solar_system: solar_system.get_all_forces()
+    integrator = get_euler_cromer_integrator(h=h, acceleration_fn=acceleration_fn)
+
+    num_iter = 10000
+    r = np.zeros(shape=(num_iter, r0.shape[0], r0.shape[1]))
+    v = np.zeros(shape=(num_iter, r0.shape[0], r0.shape[1]))
+    r[0, ...] = r0
+    v[0, ...] = v0
+    for i in trange(num_iter - 1, desc="Computing orbits"):
+        solar_system = integrator(solar_system)
+        r[i+1, ...] = solar_system.r
+        v[i+1, ...] = solar_system.v
+
+    for i in range(r.shape[1]):
+        plt.plot(r[:, i, 0], r[:, i, 1])
+    plt.show()
+
+
+    
 
 if __name__ == "__main__":
-    run_simulation()
+    main()
+

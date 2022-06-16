@@ -2,7 +2,7 @@ from py_solar_storm import get_B_field
 import numpy as np
 from tqdm import trange
 import matplotlib.pyplot as plt
-import numba
+
 
 def get_lorentz_force(v, B, q=1e9):
     """Computes the Lorentz force of on the particle given a
@@ -24,39 +24,40 @@ def get_lorentz_force(v, B, q=1e9):
 
 
 def get_rk4_integrator(h, f):
-    """Constructed and returns a RK4 integrator.
+    """Constructs and returns a RK4 integrator.
 
         Args:
             h (float):
                 Step size in time.
             f (Callable):
-                Python callable with the semantics f(t, *r).
+                Python callable with the semantics f(t, *x).
                 Plays the role of the time derivative of an arbitrary 
-                number of functions *r.
+                number of functions *x.
 
         Returns:
-            A python callable that integrates the arbitrary functions *r
-            according to f(t, *r) one time step h.
+            A python callable that integrates the arbitrary functions *x
+            according to f(t, *x) one time step h.
     """
-    def rk4_integrator(t, *r):
-        k0 = f(t, *r)
+    def rk4_integrator(t, *x):
+        k0 = f(t, *x)
 
-        args = [x + 0.5 * k * h for x, k in zip(r, k0)]
+        args = [x_i + 0.5 * k * h for x_i, k in zip(x, k0)]
         k1 = f(t, *args)
 
-        args = [x + 0.5 * k * h for x, k in zip(r, k1)]
+        args = [x_i + 0.5 * k * h for x_i, k in zip(x, k1)]
         k2 = f(t, *args)
 
-        args = [x + k * h for x, k in zip(r, k2)]
+        args = [x_i + k * h for x_i, k in zip(x, k2)]
         k3 = f(t, *args)
         
-        r_next = [
-            x + (h / 6) * (i + 2 * j + 2 * k + l) for x, i, j, k, l in zip(r, k0, k1, k2, k3)
+        x_next = [
+            x_i + (h / 6) * (i + 2 * j + 2 * k + l) for x_i, i, j, k, l in zip(x, k0, k1, k2, k3)
         ]
-        return r_next
+        return x_next
     return rk4_integrator
 
 
+# The signature of the returned function is necessary, even if `t` and `r` are unused.
 def get_velocity_fn():
     def velocity_fn(t, r, v):
         return v
@@ -114,7 +115,7 @@ def main():
 
 
     t = 0
-    for i in trange(num_iter-1, desc="Computing time evolution"):
+    for i in trange(num_iter - 1, desc="Computing time evolution"):
         r[i+1, ...], v[i+1, ...] = integrator(t, r[i], v[i])
         t += h
 
@@ -134,4 +135,5 @@ def main():
     plt.show()
 
 if __name__ == "__main__":
+    # plot_b_field()
     main()

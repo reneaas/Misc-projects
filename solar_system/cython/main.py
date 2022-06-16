@@ -2,7 +2,6 @@ from py_solar_system import PySolarSystem
 import numpy as np
 from tqdm import trange
 import matplotlib.pyplot as plt
-import pyarma as pa
 import sys
 from mpl_toolkits.mplot3d import Axes3D
 import time 
@@ -20,7 +19,7 @@ def main():
 
     solar_system = PySolarSystem(r0=r0, v0=v0, m=m)
     num_iter = int(1e7)
-    dt = 0.0001
+    dt = 0.001
     r = np.zeros(shape=(num_iter, num_particles * 3))
     start = time.perf_counter()
     for i in trange(num_iter, desc="Calculating orbits"):
@@ -49,6 +48,7 @@ def main():
     plt.xlabel("x [AU]")
     plt.ylabel("y [AU]")
     plt.show()
+
     
 
 

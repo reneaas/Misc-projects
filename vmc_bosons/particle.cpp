@@ -9,7 +9,7 @@ Particle::Particle(int n_particles, int dims, std::string sampling){
     arma::arma_rng::set_seed_random();
     // arma::arma_rng::set_seed(10);
 
-    pos_ = arma::randn(dims, n_particles)*0.0001;
+    pos_ = arma::randn(dims, n_particles) * 0.0001;
     trial_pos_ = arma::randn(dims, n_particles);
 
     if (sampling == "importance_sampling"){
