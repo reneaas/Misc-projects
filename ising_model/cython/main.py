@@ -12,8 +12,8 @@ def main():
 
     E = spin_system.get_energy()
     M = spin_system.get_magnetization()
-    print(f"{E=}")
-    print(f"{M=}")
+    print(f"{E = }")
+    print(f"{M = }")
 
 if __name__ == "__main__":
     main()

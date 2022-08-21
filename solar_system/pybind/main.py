@@ -1,4 +1,4 @@
-from py_solar_system import PySolarSystem
+from solar_system import SolarSystem
 import numpy as np
 from tqdm import trange
 import matplotlib.pyplot as plt
@@ -9,24 +9,17 @@ import time
 
 
 def main():
-    # r0 = np.load("../data/init_pos.npy")
-    # v0 = np.load("../data/init_vel.npy")
-    # m = np.load("../data/mass.npy")
+    r0 = np.load("../data/init_pos.npy")
+    v0 = np.load("../data/init_vel.npy")
+    m = np.load("../data/mass.npy")
 
+    num_particles = r0.shape[0]
+    r0 = r0.ravel()
+    v0 = v0.ravel()
 
-    # num_particles = r0.shape[0]
-    # r0 = r0.ravel()
-    # v0 = v0.ravel()
-
-    num_particles = 10
-    r0 = np.random.normal(size=(num_particles, 3), loc=0., scale=1.).ravel()
-    v0 = np.random.normal(size=(num_particles, 3), loc=0., scale=0.01).ravel()
-    m = np.random.uniform(low=1e-6, high=1, size=(num_particles,))
-
-
-    solar_system = PySolarSystem(r0=r0, v0=v0, m=m)
+    solar_system = SolarSystem(r0=r0, v0=v0, m=m)
     num_iter = int(1e6)
-    dt = 0.000001
+    dt = 0.001
     r = np.zeros(shape=(num_iter, num_particles * 3))
     start = time.perf_counter()
     for i in trange(num_iter, desc="Calculating orbits"):

@@ -2,7 +2,7 @@ from libcpp.vector cimport vector
 from py_solar_system cimport SolarSystem
 
 cdef class PySolarSystem:
-    cdef SolarSystem c_solar_system #Holds the C++ object.
+    cdef SolarSystem c_solar_system # Holds the C++ object.
 
     def __cinit__(self, vector[double] r0, vector[double] v0, vector[double] m):
         self.c_solar_system = SolarSystem(r0, v0, m)

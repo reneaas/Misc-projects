@@ -78,7 +78,7 @@ double VMC::trial_fn_no_int(Particle *particle){
 
 
 double VMC::greens_fn(arma::mat x, arma::mat y, arma::mat force_y){
-    arma::mat diff = x - y - D_*force_y*step_sz_;
+    arma::mat diff = x - y - D_ * force_y * step_sz_;
     double r = arma::dot(diff, diff);
     return exp(-r / (4 * D_ * step_sz_));
 }
@@ -89,7 +89,7 @@ void VMC::quantum_force_spherical(arma::mat *pos, arma::mat *force){
 
 
 void VMC::quantum_force_elliptical(arma::mat *pos, arma::mat *force){
-    (*force) = -4*alpha_*(*pos);
+    (*force) = -4 * alpha_ * (*pos);
     (*force).row(2) *= beta_;
 
     for (int i = 0; i < n_particles_; i++){
@@ -117,7 +117,7 @@ void VMC::metropolis_is(Particle *particle, double *last_trial, double *energy){
     double trial = (this->*trial_fn)(particle);
     double greens_fn_old = greens_fn(particle->pos_, particle->trial_pos_, particle->new_force_);
     double greens_fn_new = greens_fn(particle->trial_pos_, particle->pos_, particle->old_force_);
-    double ratio = (greens_fn_old*trial)/(greens_fn_new*(*last_trial));
+    double ratio = (greens_fn_old * trial) / (greens_fn_new * (*last_trial));
     if (ratio >= 1){
         particle->pos_.swap(particle->trial_pos_);
         *energy = (this->*loc_energy)(particle);

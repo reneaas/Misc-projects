@@ -36,7 +36,7 @@ END: Cython Metadata */
 #else
 #define CYTHON_ABI "0_29_28"
 #define CYTHON_HEX_VERSION 0x001D1CF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -948,7 +948,7 @@ struct __pyx_obj_15py_solar_system_PySolarSystem;
  * from py_solar_system cimport SolarSystem
  * 
  * cdef class PySolarSystem:             # <<<<<<<<<<<<<<
- *     cdef SolarSystem c_solar_system #Holds the C++ object.
+ *     cdef SolarSystem c_solar_system # Holds the C++ object.
  * 
  */
 struct __pyx_obj_15py_solar_system_PySolarSystem {
@@ -1337,7 +1337,7 @@ static PyObject *__pyx_tuple__2;
 /* Late includes */
 
 /* "py_solar_system.pyx":7
- *     cdef SolarSystem c_solar_system #Holds the C++ object.
+ *     cdef SolarSystem c_solar_system # Holds the C++ object.
  * 
  *     def __cinit__(self, vector[double] r0, vector[double] v0, vector[double] m):             # <<<<<<<<<<<<<<
  *         self.c_solar_system = SolarSystem(r0, v0, m)
@@ -1444,7 +1444,7 @@ static int __pyx_pf_15py_solar_system_13PySolarSystem___cinit__(struct __pyx_obj
   __pyx_v_self->c_solar_system = __pyx_t_1;
 
   /* "py_solar_system.pyx":7
- *     cdef SolarSystem c_solar_system #Holds the C++ object.
+ *     cdef SolarSystem c_solar_system # Holds the C++ object.
  * 
  *     def __cinit__(self, vector[double] r0, vector[double] v0, vector[double] m):             # <<<<<<<<<<<<<<
  *         self.c_solar_system = SolarSystem(r0, v0, m)
